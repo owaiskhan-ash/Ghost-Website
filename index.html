@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ghost : Autonomous WhatsApp Sender &amp; Scheduler</title>
+  <meta
+    name="description"
+    content="Ghost opens WhatsApp, sends custom-name broadcasts or scheduled messages one by one, then closes WhatsApp. All controlled by the app."
+  />
+  <meta name="theme-color" content="#07090A" />
+
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ghost : Opens WhatsApp. Sends One by One. Closes WhatsApp." />
+  <meta
+    property="og:description"
+    content="Unlimited custom-name client broadcasts without suspension + Birthday, Anniversary &amp; Daily Good Morning messages on time."
+  />
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="assets/og-image.png" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Wrinkled Craft Paper Texture + Noise Grain Layers -->
+  <div class="paper-bg" aria-hidden="true"></div>
+  <div class="paper-grain" aria-hidden="true"></div>
+
+  <!-- Sleek Minimal Top Header -->
+  <header class="topbar" data-reveal style="--reveal-delay: 40ms;">
+    <div class="shell">
+      <div class="paper-sheet topbar__inner">
+        <div class="brand">
+          <img
+            src="assets/ghost-pigeon-icon.png"
+            alt="Ghost Icon"
+            class="brand__icon"
+            width="26"
+            height="26"
+          />
+          <span class="brand__title">Ghost</span>
+        </div>
+
+        <span class="paper-tag">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>WHATSAPP AUTOPILOT</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ====================================================================
+         HERO PITCH
+         ==================================================================== -->
+    <section class="hero">
+      <div class="shell">
+        <div class="hero__grid">
+          <div>
+            <div data-reveal style="--reveal-delay: 110ms;">
+              <span class="paper-tag paper-tag--solid">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                <span>ALL CONTROLLED BY THE APP</span>
+              </span>
+            </div>
+
+            <h1 class="hero__title" data-reveal style="--reveal-delay: 190ms;">
+              Opens WhatsApp.<br />
+              Sends <span class="hero__title-highlight">one by one.</span><br />
+              Closes WhatsApp.
+            </h1>
+
+            <p class="hero__lead" data-reveal style="--reveal-delay: 260ms;">
+              Hands-free WhatsApp &amp; WA Business automation on your phone.
+            </p>
+
+            <div class="hero__pitch-cards">
+              <div class="pitch-mini" data-reveal style="--reveal-delay: 330ms;">
+                <div class="pitch-mini__badge">01 · Clients</div>
+                <div class="pitch-mini__title">Unlimited {name} Broadcasts</div>
+                <div class="pitch-mini__sub">Sent 1 by 1. No WhatsApp suspension.</div>
+              </div>
+
+              <div class="pitch-mini" data-reveal style="--reveal-delay: 400ms;">
+                <div class="pitch-mini__badge">02 · Loved Ones</div>
+                <div class="pitch-mini__title">The App Never Forgets</div>
+                <div class="pitch-mini__sub">Birthdays, Anniversaries &amp; Good Mornings.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Paper Pigeon + Auto-Cycling Phone Preview -->
+          <div class="hero-stage" data-reveal="scale" style="--reveal-delay: 240ms;">
+            <div class="paper-sheet paper-dogear hero-stage__pigeon-card">
+              <img
+                src="assets/hero-paper-pigeon.png"
+                alt="Paper-crafted black pigeon dispatching green envelopes"
+                class="hero-stage__pigeon-art"
+                width="38"
+                height="38"
+              />
+              <div>
+                <div class="mono" style="font-size: 8.5px; color: var(--ghost-accent); letter-spacing: 0.14em;">
+                  ON-DEVICE COURIER
+                </div>
+                <div style="font-size: 11px; font-weight: 300; margin-top: 4px; letter-spacing: 0.04em;">
+                  Wake · Open WA · Send 1 by 1 · Close
+                </div>
+              </div>
+            </div>
+
+            <div class="paper-phone">
+              <div class="paper-phone__screen">
+                <img
+                  id="heroPhoneScreenImg"
+                  src="assets/screen-broadcast.png"
+                  alt="Ghost App Screen"
+                  class="paper-phone__img fade-swap"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         AUTONOMOUS DEVICE CONTROL
+         ==================================================================== -->
+    <section class="section">
+      <div class="shell">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="paper-tag">AUTONOMOUS DEVICE CONTROL</span>
+          </div>
+          <h2 class="section__title">
+            All controlled by the app, start to finish.
+          </h2>
+        </div>
+
+        <div class="loop-grid">
+          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 60ms;">
+            <div class="loop-card__top">
+              <span class="loop-card__step">STEP 01</span>
+              <span class="loop-card__badge">Wake</span>
+            </div>
+            <h3 class="loop-card__title">Wakes on Cue</h3>
+            <p class="loop-card__desc">Wakes screen on the exact minute.</p>
+          </article>
+
+          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 140ms;">
+            <div class="loop-card__top">
+              <span class="loop-card__step">STEP 02</span>
+              <span class="loop-card__badge">Launch</span>
+            </div>
+            <h3 class="loop-card__title">Opens WhatsApp</h3>
+            <p class="loop-card__desc">Opens real WhatsApp into the chat.</p>
+          </article>
+
+          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 220ms;">
+            <div class="loop-card__top">
+              <span class="loop-card__step">STEP 03</span>
+              <span class="loop-card__badge">1 by 1</span>
+            </div>
+            <h3 class="loop-card__title">Sends One by One</h3>
+            <p class="loop-card__desc">Types custom <code>{name}</code> &amp; sends.</p>
+          </article>
+
+          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 300ms;">
+            <div class="loop-card__top">
+              <span class="loop-card__step">STEP 04</span>
+              <span class="loop-card__badge">Sleep</span>
+            </div>
+            <h3 class="loop-card__title">Closes WhatsApp</h3>
+            <p class="loop-card__desc">Exits WhatsApp &amp; locks display.</p>
+          </article>
+        </div>
+
+        <!-- Auto-Cycling Sequential Status Bar -->
+        <div class="paper-sheet paper-sheet--accent sim-strip" data-reveal style="--reveal-delay: 260ms;">
+          <div class="sim-strip__status">
+            <img
+              src="assets/ghost-pigeon-icon.png"
+              alt=""
+              class="sim-pigeon-badge"
+              width="32"
+              height="32"
+            />
+            <div>
+              <div class="mono" style="font-size: 8.5px; color: var(--ghost-accent); letter-spacing: 0.14em;">
+                SEQUENTIAL FLOW
+              </div>
+              <div id="simStatusText" class="fade-swap" style="font-size: 11px; font-weight: 300; margin-top: 4px; letter-spacing: 0.03em;">
+                1/5 · Waking phone &amp; opening WhatsApp
+              </div>
+            </div>
+          </div>
+
+          <div class="sim-steps-row">
+            <span class="sim-pill is-current" data-sim-step="0">1. Open WA</span>
+            <span class="sim-pill" data-sim-step="1">2. Aarav ✓</span>
+            <span class="sim-pill" data-sim-step="2">3. Sara ✓</span>
+            <span class="sim-pill" data-sim-step="3">4. Rohan ✓</span>
+            <span class="sim-pill" data-sim-step="4">5. Close WA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         2 CORE USE CASES
+         ==================================================================== -->
+    <section class="section">
+      <div class="shell">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="paper-tag paper-tag--solid">2 USE CASES</span>
+          </div>
+          <h2 class="section__title">
+            Built for business reach and personal moments.
+          </h2>
+        </div>
+
+        <div class="usecases-grid">
+          <!-- USE CASE 01 -->
+          <article class="paper-sheet paper-sheet--accent paper-dogear usecase-card" data-reveal="left" style="--reveal-delay: 80ms;">
+            <div>
+              <div class="usecase-card__art-wrap">
+                <img
+                  src="assets/usecase-broadcast.png"
+                  alt="Paper-crafted one-by-one client broadcast queue"
+                  class="usecase-card__art"
+                />
+              </div>
+
+              <div class="usecase-card__body">
+                <span class="paper-tag paper-tag--solid">USE CASE 01 · CLIENTS</span>
+                <h3 class="usecase-card__title">
+                  Unlimited Broadcasts with Custom <code>{name}</code> Without Getting Suspended
+                </h3>
+                <p class="usecase-card__pitch">
+                  Opens real WhatsApp and sends custom-named messages one by one. Zero ban risk.
+                </p>
+              </div>
+            </div>
+
+            <div class="wa-paper-bubble fade-swap" id="broadcastBubbleWrap">
+              <div id="broadcastResolvedText">
+                Hi Aarav Mehta, your priority pass is ready.
+              </div>
+              <div class="wa-paper-bubble__meta">
+                <span id="broadcastResolvedRecipient">Sent 1 by 1 · Aarav Mehta (1/48)</span>
+                <span>10:30 AM ✓✓</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- USE CASE 02 -->
+          <article class="paper-sheet paper-dogear usecase-card" data-reveal="right" style="--reveal-delay: 180ms;">
+            <div>
+              <div class="usecase-card__art-wrap">
+                <img
+                  src="assets/usecase-lovedones.png"
+                  alt="Paper-crafted calendar, heart, candle, and morning sun envelope"
+                  class="usecase-card__art"
+                />
+              </div>
+
+              <div class="usecase-card__body">
+                <span class="paper-tag paper-tag--solid">USE CASE 02 · LOVED ONES</span>
+                <h3 class="usecase-card__title">
+                  Anniversary, Birthday &amp; Daily Good Morning Messages on Time
+                </h3>
+                <p class="usecase-card__pitch">
+                  Set it once. Ghost wakes up on schedule and sends your wish. The app never forgets.
+                </p>
+              </div>
+            </div>
+
+            <div class="wa-paper-bubble fade-swap" id="occasionBubbleWrap">
+              <div id="occasionResolvedText">
+                Happy Anniversary my love! Right on the dot ❤️
+              </div>
+              <div class="wa-paper-bubble__meta">
+                <span id="occasionResolvedMeta">Ayesha · 12:00 AM Yearly</span>
+                <span>Auto-Sent ✓✓</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         APP SCREENSHOTS
+         ==================================================================== -->
+    <section class="section">
+      <div class="shell">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="paper-tag">APP SCREENSHOTS</span>
+          </div>
+          <h2 class="section__title">
+            Inside Ghost.
+          </h2>
+        </div>
+
+        <div class="screens-grid">
+          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 60ms;">
+            <div class="screen-card__bezel">
+              <div class="screen-card__screen">
+                <img
+                  src="assets/screen-broadcast.png"
+                  alt="Custom Name Broadcast Screen"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="screen-card__num">01 · BROADCAST</div>
+              <h3 class="screen-card__title">Custom {name} Queue</h3>
+            </div>
+          </article>
+
+          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 140ms;">
+            <div class="screen-card__bezel">
+              <div class="screen-card__screen">
+                <img
+                  src="assets/screen-live-send.png"
+                  alt="Live Auto-Pilot Screen"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="screen-card__num">02 · AUTO-PILOT</div>
+              <h3 class="screen-card__title">Sends 1 by 1 in WA</h3>
+            </div>
+          </article>
+
+          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 220ms;">
+            <div class="screen-card__bezel">
+              <div class="screen-card__screen">
+                <img
+                  src="assets/screen-loved-ones.png"
+                  alt="Loved Ones Schedule Screen"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="screen-card__num">03 · LOVED ONES</div>
+              <h3 class="screen-card__title">Never-Forget Schedule</h3>
+            </div>
+          </article>
+
+          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 300ms;">
+            <div class="screen-card__bezel">
+              <div class="screen-card__screen">
+                <img
+                  src="assets/screen-setup.png"
+                  alt="Wake and Auto-Close Screen"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="screen-card__num">04 · ENGINE</div>
+              <h3 class="screen-card__title">Wake &amp; Auto-Close</h3>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====================================================================
+       FOOTER : "Put your WhatsApp on autopilot today."
+       ==================================================================== -->
+  <footer class="autopilot-footer" data-reveal style="--reveal-delay: 100ms;">
+    <div class="shell">
+      <div class="paper-sheet paper-sheet--accent paper-dogear autopilot-footer__sheet">
+        <div class="autopilot-footer__brand">
+          <img
+            src="assets/ghost-pigeon-icon.png"
+            alt="Ghost Icon"
+            class="autopilot-footer__icon"
+            width="46"
+            height="46"
+          />
+          <div>
+            <h2 class="autopilot-footer__title">
+              Put your WhatsApp on autopilot today.
+            </h2>
+            <p class="autopilot-footer__sub">
+              Opens WhatsApp · Sends 1 by 1 · Closes WhatsApp
+            </p>
+          </div>
+        </div>
+
+        <div class="autopilot-footer__meta">
+          <span style="color: var(--ghost-accent);">GHOST FOR ANDROID</span>
+          <span>100% Controlled By The App</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

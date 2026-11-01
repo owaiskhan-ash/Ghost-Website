@@ -1,11 +1,11 @@
 {
-  "name": "Ghost : Autonomous WhatsApp Sender & Scheduler",
+  "name": "Ghost · WhatsApp Autopilot",
   "short_name": "Ghost",
-  "description": "Opens WhatsApp, sends custom-name broadcasts or scheduled messages one by one, then closes WhatsApp.",
+  "description": "Schedule once. Ghost wakes your phone, opens WhatsApp, types every message one by one, taps Send, and locks the screen.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#07090A",
-  "theme_color": "#32FF4A",
+  "background_color": "#E0E5EC",
+  "theme_color": "#E0E5EC",
   "icons": [
     {
       "src": "assets/icon-192.png",

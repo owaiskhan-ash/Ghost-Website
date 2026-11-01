@@ -97,29 +97,16 @@ body {
   min-height: 100vh;
 }
 
-/* Visible Wrinkled Craft Paper Texture Background */
-.paper-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-color: #0b0f0d;
-  background-image: url('assets/wrinkled-paper-dark.jpg');
-  background-size: 980px auto;
-  background-position: top center;
-  background-repeat: repeat;
-  opacity: 0.94;
-}
-
-/* High-Frequency Paper Noise Overlay */
+/* Seamless Minimal Noise Grain Background Overlay */
 .paper-grain {
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.14;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  background-repeat: repeat;
 }
 
 header,
@@ -410,25 +397,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 28px;
-}
-
-.hero-stage__pigeon-card {
-  width: 100%;
-  max-width: 272px;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.hero-stage__pigeon-art {
-  width: 38px;
-  height: 38px;
-  border-radius: 2px;
-  object-fit: cover;
-  border: 1px solid var(--ghost-accent);
-  flex-shrink: 0;
+  justify-content: center;
 }
 
 .paper-phone {

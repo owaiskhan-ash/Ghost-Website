@@ -1,417 +1,1531 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ghost : Autonomous WhatsApp Sender &amp; Scheduler</title>
-  <meta
-    name="description"
-    content="Ghost opens WhatsApp, sends custom-name broadcasts or scheduled messages one by one, then closes WhatsApp. All controlled by the app."
-  />
-  <meta name="theme-color" content="#07090A" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GHOST · WhatsApp Autopilot</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <style>
+    /* ==========================================================================
+       1. Self-Hosted Thin & Normal Fonts + CSS Custom Properties
+       ========================================================================== */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 300;
+      font-display: swap;
+      src: url('assets/fonts/inter-latin-300-normal.woff2') format('woff2');
+    }
 
-  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="manifest" href="site.webmanifest" />
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('assets/fonts/inter-latin-400-normal.woff2') format('woff2');
+    }
 
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Ghost : Opens WhatsApp. Sends One by One. Closes WhatsApp." />
-  <meta
-    property="og:description"
-    content="Unlimited custom-name client broadcasts without suspension + Birthday, Anniversary &amp; Daily Good Morning messages on time."
-  />
-  <meta property="og:image" content="assets/og-image.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="assets/og-image.png" />
+    :root {
+      --bg-base: #E0E5EC;
+      --text-primary: #3D4852;
+      --text-secondary: #8A94A6;
+      --icon-color: #6C7A89;
+      --accent-color: #5FB3B3;
 
-  <link rel="stylesheet" href="styles.css" />
+      /* Paired Neumorphic Shadows */
+      --shadow-raised: 9px 9px 16px #A3B1C6, -9px -9px 16px #FFFFFF;
+      --shadow-raised-sm: 5px 5px 10px #A3B1C6, -5px -5px 10px #FFFFFF;
+      --shadow-inset: inset 6px 6px 12px #A3B1C6, inset -6px -6px 12px #FFFFFF;
+      --shadow-inset-sm: inset 4px 4px 8px #A3B1C6, inset -4px -4px 8px #FFFFFF;
+      --shadow-focus: inset 3px 3px 6px #A3B1C6, inset -3px -3px 6px #FFFFFF;
+
+      /* Radii */
+      --radius-lg: 32px;
+      --radius-md: 28px;
+      --radius-sm: 24px;
+      --radius-pill: 999px;
+      --radius-circle: 50%;
+    }
+
+    /* ==========================================================================
+       2. Reset & Base Typography
+       ========================================================================== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 400;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    [tabindex="0"]:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+
+    /* Typography helpers */
+    .title-text {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .subtitle-text {
+      font-size: 0.78125rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .outlined-prefix {
+      color: inherit;
+      -webkit-text-stroke: 0;
+    }
+
+    /* ==========================================================================
+       3. Shared Neumorphic Primitives
+       ========================================================================== */
+    .neu-card-lg {
+      background-color: var(--bg-base);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-raised);
+    }
+
+    .neu-card-md {
+      background-color: var(--bg-base);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-raised);
+    }
+
+    .neu-pill {
+      background-color: var(--bg-base);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-raised);
+    }
+
+    .neu-well-inset {
+      background-color: var(--bg-base);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-inset);
+    }
+
+    .icon-well {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-circle);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-inset-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--icon-color);
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-circle);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-raised-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--icon-color);
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover,
+    .icon-btn:active,
+    .icon-btn.is-active {
+      box-shadow: var(--shadow-inset-sm);
+      color: var(--accent-color);
+    }
+
+    .icon-svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-inset-sm);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .pill-tag .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-circle);
+      background-color: var(--accent-color);
+    }
+
+    /* ==========================================================================
+       4. Landing Page Layout & Header Navbar
+       ========================================================================== */
+    .page-wrapper {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 40px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 72px;
+    }
+
+    /* Top Neumorphic Header Bar */
+    .site-header {
+      height: 72px;
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon-ring {
+      width: 46px;
+      height: 46px;
+      border-radius: var(--radius-circle);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-inset-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+    }
+
+    .brand-wordmark {
+      font-size: 1.15rem;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-pill-link {
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-raised-sm);
+      font-size: 0.78125rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+
+    .nav-pill-link:hover,
+    .nav-pill-link:active {
+      box-shadow: var(--shadow-inset-sm);
+      color: var(--accent-color);
+    }
+
+    /* ==========================================================================
+       5. Hero Intro + Interactive 2-Column How-It-Works Dashboard
+       ========================================================================== */
+    .hero-section {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .hero-intro {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hero-heading {
+      font-size: 2.15rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      max-width: 520px;
+    }
+
+    /* 2-Column Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .dashboard-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    /* Left Column: Hero Control Card */
+    .hero-card {
+      padding: 24px;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .hero-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hero-card__identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Pill Toggle Switch */
+    .neu-toggle {
+      width: 72px;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-inset-sm);
+      padding: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .neu-toggle__icon {
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--icon-color);
+      z-index: 1;
+      transition: all 0.2s ease;
+    }
+
+    .neu-toggle[aria-checked="true"] .neu-toggle__icon {
+      color: var(--accent-color);
+    }
+
+    .neu-toggle__knob {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-circle);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-raised-sm);
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .neu-toggle[aria-checked="true"] .neu-toggle__knob {
+      transform: translateX(36px);
+    }
+
+    .neu-toggle[aria-checked="true"] {
+      box-shadow: var(--shadow-inset);
+    }
+
+    /* Small Pill Badge */
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-inset-sm);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .hero-badge .icon-svg {
+      width: 15px;
+      height: 15px;
+      color: var(--accent-color);
+    }
+
+    /* Semicircular Gauge */
+    .gauge-container {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      margin: 4px auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gauge-svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      display: block;
+    }
+
+    .gauge-readout {
+      margin-top: -28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .gauge-readout__number-row {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 5px;
+    }
+
+    .gauge-readout__value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .gauge-readout__unit {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .gauge-readout__caption {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Two-Up Card Row */
+    .two-up-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      flex: 1;
+    }
+
+    .square-card {
+      min-height: 220px;
+      height: 100%;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .square-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .square-card__art {
+      width: 100%;
+      flex: 1;
+      min-height: 170px;
+      margin: 12px 0;
+      border-radius: 18px;
+      background-color: var(--bg-base);
+      box-shadow: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .square-card__art img {
+      width: 100%;
+      height: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      border-radius: 14px;
+      display: block;
+    }
+
+    .square-card__bottom {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Bottom Action Bar */
+    .action-bar {
+      height: 64px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .action-bar__left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .plus-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-circle);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-raised-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--icon-color);
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .plus-btn:hover,
+    .plus-btn:active,
+    .plus-btn.is-active {
+      box-shadow: var(--shadow-inset);
+      color: var(--accent-color);
+    }
+
+    .see-all-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-raised-sm);
+      font-size: 0.78125rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .see-all-btn:hover,
+    .see-all-btn:active {
+      box-shadow: var(--shadow-inset-sm);
+      color: var(--accent-color);
+    }
+
+    /* Right Column: Agent Status Pill & 4-Step Panel */
+    .profile-pill {
+      height: 80px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .profile-pill__left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .avatar-ring {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-circle);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-inset-sm);
+      padding: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .avatar-slot {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius-circle);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-raised-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--icon-color);
+    }
+
+    .analytics-panel {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .analytics-panel__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .analytics-panel__identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .analytics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .analytics-row {
+      width: 100%;
+      height: 64px;
+      border-radius: var(--radius-pill);
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-raised);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .analytics-row:hover,
+    .analytics-row:active,
+    .analytics-row.is-active {
+      box-shadow: var(--shadow-inset);
+    }
+
+    .analytics-row.is-active .icon-well {
+      color: var(--accent-color);
+    }
+
+    .analytics-row:hover .chevron-icon,
+    .analytics-row.is-active .chevron-icon {
+      color: var(--accent-color);
+      transform: translateX(2px);
+    }
+
+    .analytics-row__left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .chevron-icon {
+      color: var(--icon-color);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    /* ==========================================================================
+       6. Section Header Pattern
+       ========================================================================== */
+    .section-block {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .section-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-heading {
+      font-size: 1.55rem;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       7. Two Core Use Cases Section
+       ========================================================================== */
+    .usecase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .usecase-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .usecase-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .usecase-card__title {
+      font-size: 1.125rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .usecase-card__desc {
+      font-size: 0.84375rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
+    /* Inset Message Preview Well */
+    .message-well {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message-well__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .message-well__status {
+      color: var(--accent-color);
+    }
+
+    .message-well__bubble {
+      font-size: 0.84375rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.45;
+      transition: opacity 0.25s ease;
+    }
+
+    /* ==========================================================================
+       8. Inside The App (4 Neumorphic Phone Frames)
+       ========================================================================== */
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .screen-card {
+      padding: 18px 18px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .screen-bezel {
+      width: 100%;
+      aspect-ratio: 1 / 2;
+      border-radius: 22px;
+      background-color: var(--bg-base);
+      box-shadow: var(--shadow-inset);
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .screen-bezel img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 16px;
+      display: block;
+    }
+
+    /* ==========================================================================
+       9. Closing Neumorphic Footer
+       ========================================================================== */
+    .site-footer {
+      padding: 40px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .footer-heading {
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .footer-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* ==========================================================================
+       10. Responsive Breakpoints
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .dashboard-grid,
+      .usecase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .screens-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      html {
+        font-size: 14.4px;
+      }
+
+      .page-wrapper {
+        padding: 20px 16px 48px;
+        gap: 52px;
+      }
+
+      .site-header {
+        height: auto;
+        padding: 14px 18px;
+        flex-direction: column;
+      }
+
+      .two-up-row,
+      .screens-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-heading {
+        font-size: 1.75rem;
+        letter-spacing: 0.12em;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Wrinkled Craft Paper Texture + Noise Grain Layers -->
-  <div class="paper-bg" aria-hidden="true"></div>
-  <div class="paper-grain" aria-hidden="true"></div>
-
-  <!-- Sleek Minimal Top Header -->
-  <header class="topbar" data-reveal style="--reveal-delay: 40ms;">
-    <div class="shell">
-      <div class="paper-sheet topbar__inner">
-        <div class="brand">
+  <div class="page-wrapper">
+    <!-- ========================================================================
+         1. TOP NEUMORPHIC HEADER NAVBAR
+         ======================================================================== -->
+    <header class="neu-pill site-header">
+      <div class="brand-lockup">
+        <div class="brand-icon-ring" aria-hidden="true" style="overflow: hidden; padding: 3px;">
           <img
-            src="assets/ghost-pigeon-icon.png"
-            alt="Ghost Icon"
-            class="brand__icon"
-            width="26"
-            height="26"
+            src="assets/ghost-soft-ui-logo.png"
+            alt="Ghost Soft UI Pigeon Logo"
+            style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;"
           />
-          <span class="brand__title">Ghost</span>
         </div>
-
-        <span class="paper-tag">
-          <span class="pulse-dot" aria-hidden="true"></span>
-          <span>WHATSAPP AUTOPILOT</span>
+        <span class="brand-wordmark">
+          <span class="outlined-prefix">GH</span><span>OST</span>
         </span>
       </div>
-    </div>
-  </header>
 
-  <main>
-    <!-- ====================================================================
-         HERO PITCH
-         ==================================================================== -->
-    <section class="hero">
-      <div class="shell">
-        <div class="hero__grid">
-          <div>
-            <div data-reveal style="--reveal-delay: 110ms;">
-              <span class="paper-tag paper-tag--solid">
-                <span class="pulse-dot" aria-hidden="true"></span>
-                <span>ALL CONTROLLED BY THE APP</span>
-              </span>
-            </div>
+      <nav class="header-nav" aria-label="Section navigation">
+        <a href="#how-it-works" class="nav-pill-link">How It Works</a>
+        <a href="#use-cases" class="nav-pill-link">Use Cases</a>
+        <a href="#screens" class="nav-pill-link">App Screens</a>
+      </nav>
+    </header>
 
-            <h1 class="hero__title" data-reveal style="--reveal-delay: 190ms;">
-              Opens WhatsApp.<br />
-              Sends <span class="hero__title-highlight">one by one.</span><br />
-              Closes WhatsApp.
-            </h1>
+    <!-- ========================================================================
+         2. HERO LANDING SECTION & INTERACTIVE HOW-IT-WORKS DASHBOARD
+         ======================================================================== -->
+    <section id="how-it-works" class="hero-section" aria-label="Hero and How Ghost Works">
+      <div class="hero-intro">
+        <div class="pill-tag">
+          <span class="dot"></span>
+          <span>Autonomous Android Courier</span>
+        </div>
+        <h1 class="hero-heading">
+          <span class="outlined-prefix">AUT</span><span>OPILOT FOR WHATSAPP</span>
+        </h1>
+        <p class="hero-subtitle">
+          Schedule once. Ghost wakes your phone, opens WhatsApp, types every message one by one, taps Send, and locks the screen.
+        </p>
+      </div>
 
-            <p class="hero__lead" data-reveal style="--reveal-delay: 260ms;">
-              Hands-free WhatsApp &amp; WA Business automation on your phone.
-            </p>
-
-            <div class="hero__pitch-cards">
-              <div class="pitch-mini" data-reveal style="--reveal-delay: 330ms;">
-                <div class="pitch-mini__badge">01 · Clients</div>
-                <div class="pitch-mini__title">Unlimited {name} Broadcasts</div>
-                <div class="pitch-mini__sub">Sent 1 by 1. No WhatsApp suspension.</div>
+      <!-- Two-Column Neumorphic Interactive Showcase -->
+      <main class="dashboard-grid">
+        <!-- LEFT COLUMN -->
+        <div class="dashboard-col">
+          <!-- 1. Two-Up Card Row -->
+          <div class="two-up-row">
+            <!-- Card 1: Sun Icon -->
+            <article class="neu-card-md square-card">
+              <div class="square-card__top">
+                <div class="icon-well" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <line x1="12" y1="2.5" x2="12" y2="5"></line>
+                    <line x1="12" y1="19" x2="12" y2="21.5"></line>
+                    <line x1="4.22" y1="4.22" x2="5.98" y2="5.98"></line>
+                    <line x1="18.02" y1="18.02" x2="19.78" y2="19.78"></line>
+                    <line x1="2.5" y1="12" x2="5" y2="12"></line>
+                    <line x1="19" y1="12" x2="21.5" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.98" y2="18.02"></line>
+                    <line x1="18.02" y1="5.98" x2="19.78" y2="4.22"></line>
+                  </svg>
+                </div>
+                <button type="button" class="icon-btn" aria-label="Morning schedule">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <circle cx="6" cy="12" r="1"></circle>
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="18" cy="12" r="1"></circle>
+                  </svg>
+                </button>
               </div>
-
-              <div class="pitch-mini" data-reveal style="--reveal-delay: 400ms;">
-                <div class="pitch-mini__badge">02 · Loved Ones</div>
-                <div class="pitch-mini__title">The App Never Forgets</div>
-                <div class="pitch-mini__sub">Birthdays, Anniversaries &amp; Good Mornings.</div>
+              <div class="square-card__art">
+                <img
+                  src="assets/card-loved-ones.png"
+                  alt="Soft UI 3D heart clock scheduled at 7 AM"
+                />
               </div>
-            </div>
+              <div class="square-card__bottom">
+                <h3 class="title-text">Loved Ones</h3>
+                <p class="subtitle-text">Birthdays &amp; 7 AM Notes</p>
+              </div>
+            </article>
+
+            <!-- Card 2: Moon Icon -->
+            <article class="neu-card-md square-card">
+              <div class="square-card__top">
+                <div class="icon-well" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"></path>
+                  </svg>
+                </div>
+                <button type="button" class="icon-btn" aria-label="Client broadcast options">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <circle cx="6" cy="12" r="1"></circle>
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="18" cy="12" r="1"></circle>
+                  </svg>
+                </button>
+              </div>
+              <div class="square-card__art">
+                <img
+                  src="assets/card-client-lists.png"
+                  alt="Soft UI 3D sequential client broadcast envelopes"
+                />
+              </div>
+              <div class="square-card__bottom">
+                <h3 class="title-text">Client Lists</h3>
+                <p class="subtitle-text">Unlimited {name} Sends</p>
+              </div>
+            </article>
           </div>
 
-          <!-- Right Column: Paper Pigeon + Auto-Cycling Phone Preview -->
-          <div class="hero-stage" data-reveal="scale" style="--reveal-delay: 240ms;">
-            <div class="paper-sheet paper-dogear hero-stage__pigeon-card">
-              <img
-                src="assets/hero-paper-pigeon.png"
-                alt="Paper-crafted black pigeon dispatching green envelopes"
-                class="hero-stage__pigeon-art"
-                width="38"
-                height="38"
-              />
+          <!-- 2. Bottom Action Bar -->
+          <div class="neu-pill action-bar">
+            <div class="action-bar__left">
+              <button type="button" id="plusActionBtn" class="plus-btn" aria-label="Step trigger">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                  <line x1="12" y1="6" x2="12" y2="18"></line>
+                  <line x1="6" y1="12" x2="18" y2="12"></line>
+                </svg>
+              </button>
               <div>
-                <div class="mono" style="font-size: 8.5px; color: var(--ghost-accent); letter-spacing: 0.14em;">
-                  ON-DEVICE COURIER
+                <div class="title-text">100% On-Device</div>
+                <div class="subtitle-text">No Cloud · Volume-Down Stop</div>
+              </div>
+            </div>
+
+            <button type="button" id="cycleStepBtn" class="see-all-btn">Next Step</button>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="dashboard-col">
+          <!-- 1. Agent Status Pill -->
+          <div class="neu-pill profile-pill">
+            <div class="profile-pill__left">
+              <div class="avatar-ring" aria-hidden="true">
+                <div class="avatar-slot" style="overflow: hidden;">
+                  <img
+                    src="assets/ghost-soft-ui-logo.png"
+                    alt="Ghost Soft UI Pigeon Logo"
+                    style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;"
+                  />
                 </div>
-                <div style="font-size: 11px; font-weight: 300; margin-top: 4px; letter-spacing: 0.04em;">
-                  Wake · Open WA · Send 1 by 1 · Close
+              </div>
+              <div>
+                <div class="title-text">Ghost Android Agent</div>
+                <div class="subtitle-text">Works on WhatsApp &amp; WA Business</div>
+              </div>
+            </div>
+
+            <button type="button" class="icon-btn" aria-label="Agent status">
+              <svg class="icon-svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="6" r="1"></circle>
+                <circle cx="12" cy="12" r="1"></circle>
+                <circle cx="12" cy="18" r="1"></circle>
+              </svg>
+            </button>
+          </div>
+
+          <!-- 2. How Ghost Works Panel (4-Step Autonomous Flow) -->
+          <article class="neu-card-lg analytics-panel">
+            <div class="analytics-panel__header">
+              <div class="analytics-panel__identity">
+                <div class="icon-well" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <polyline points="4 16 9 11 13 14 20 7"></polyline>
+                    <polyline points="16 7 20 7 20 11"></polyline>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="title-text">How Ghost Works</h2>
+                  <p class="subtitle-text">4-Step Autonomous Device Control</p>
                 </div>
               </div>
+
+              <button type="button" id="nextStepBtn" class="icon-btn" aria-label="Cycle step">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                  <line x1="6" y1="12" x2="18" y2="12"></line>
+                  <polyline points="13 7 18 12 13 17"></polyline>
+                </svg>
+              </button>
             </div>
 
-            <div class="paper-phone">
-              <div class="paper-phone__screen">
-                <img
-                  id="heroPhoneScreenImg"
-                  src="assets/screen-broadcast.png"
-                  alt="Ghost App Screen"
-                  class="paper-phone__img fade-swap"
-                />
-              </div>
+            <!-- 4 Raised Pill List Rows -->
+            <div class="analytics-list" role="list">
+              <!-- Step 1 -->
+              <button type="button" class="analytics-row is-active" data-step="0" role="listitem">
+                <span class="analytics-row__left">
+                  <span class="icon-well" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="8"></circle>
+                      <path d="M12 7v5l3.5 2"></path>
+                    </svg>
+                  </span>
+                  <span>
+                    <span class="title-text" style="display: block;">01 · Wakes on Cue</span>
+                    <span class="subtitle-text" style="display: block;">Lights up screen on exact time</span>
+                  </span>
+                </span>
+                <span class="chevron-icon" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <polyline points="9 6 15 12 9 18"></polyline>
+                  </svg>
+                </span>
+              </button>
+
+              <!-- Step 2 -->
+              <button type="button" class="analytics-row" data-step="1" role="listitem">
+                <span class="analytics-row__left">
+                  <span class="icon-well" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                  </span>
+                  <span>
+                    <span class="title-text" style="display: block;">02 · Opens WhatsApp</span>
+                    <span class="subtitle-text" style="display: block;">Finds contact &amp; types {name}</span>
+                  </span>
+                </span>
+                <span class="chevron-icon" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <polyline points="9 6 15 12 9 18"></polyline>
+                  </svg>
+                </span>
+              </button>
+
+              <!-- Step 3 -->
+              <button type="button" class="analytics-row" data-step="2" role="listitem">
+                <span class="analytics-row__left">
+                  <span class="icon-well" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                  </span>
+                  <span>
+                    <span class="title-text" style="display: block;">03 · Sends One by One</span>
+                    <span class="subtitle-text" style="display: block;">Taps Send at natural human pace</span>
+                  </span>
+                </span>
+                <span class="chevron-icon" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <polyline points="9 6 15 12 9 18"></polyline>
+                  </svg>
+                </span>
+              </button>
+
+              <!-- Step 4 -->
+              <button type="button" class="analytics-row" data-step="3" role="listitem">
+                <span class="analytics-row__left">
+                  <span class="icon-well" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                      <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                    </svg>
+                  </span>
+                  <span>
+                    <span class="title-text" style="display: block;">04 · Closes WhatsApp</span>
+                    <span class="subtitle-text" style="display: block;">Exits app &amp; locks screen</span>
+                  </span>
+                </span>
+                <span class="chevron-icon" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <polyline points="9 6 15 12 9 18"></polyline>
+                  </svg>
+                </span>
+              </button>
             </div>
-          </div>
+          </article>
         </div>
-      </div>
+      </main>
     </section>
 
-    <!-- ====================================================================
-         AUTONOMOUS DEVICE CONTROL
-         ==================================================================== -->
-    <section class="section">
-      <div class="shell">
-        <div class="section__head" data-reveal>
-          <div>
-            <span class="paper-tag">AUTONOMOUS DEVICE CONTROL</span>
-          </div>
-          <h2 class="section__title">
-            All controlled by the app, start to finish.
-          </h2>
+    <!-- ========================================================================
+         3. CORE USE CASES SECTION
+         ======================================================================== -->
+    <section id="use-cases" class="section-block" aria-label="Core Use Cases">
+      <div class="section-header">
+        <div class="pill-tag">
+          <span class="dot"></span>
+          <span>Core Use Cases</span>
         </div>
-
-        <div class="loop-grid">
-          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 60ms;">
-            <div class="loop-card__top">
-              <span class="loop-card__step">STEP 01</span>
-              <span class="loop-card__badge">Wake</span>
-            </div>
-            <h3 class="loop-card__title">Wakes on Cue</h3>
-            <p class="loop-card__desc">Wakes screen on the exact minute.</p>
-          </article>
-
-          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 140ms;">
-            <div class="loop-card__top">
-              <span class="loop-card__step">STEP 02</span>
-              <span class="loop-card__badge">Launch</span>
-            </div>
-            <h3 class="loop-card__title">Opens WhatsApp</h3>
-            <p class="loop-card__desc">Opens real WhatsApp into the chat.</p>
-          </article>
-
-          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 220ms;">
-            <div class="loop-card__top">
-              <span class="loop-card__step">STEP 03</span>
-              <span class="loop-card__badge">1 by 1</span>
-            </div>
-            <h3 class="loop-card__title">Sends One by One</h3>
-            <p class="loop-card__desc">Types custom <code>{name}</code> &amp; sends.</p>
-          </article>
-
-          <article class="paper-sheet paper-dogear loop-card" data-reveal style="--reveal-delay: 300ms;">
-            <div class="loop-card__top">
-              <span class="loop-card__step">STEP 04</span>
-              <span class="loop-card__badge">Sleep</span>
-            </div>
-            <h3 class="loop-card__title">Closes WhatsApp</h3>
-            <p class="loop-card__desc">Exits WhatsApp &amp; locks display.</p>
-          </article>
-        </div>
-
-        <!-- Auto-Cycling Sequential Status Bar -->
-        <div class="paper-sheet paper-sheet--accent sim-strip" data-reveal style="--reveal-delay: 260ms;">
-          <div class="sim-strip__status">
-            <img
-              src="assets/ghost-pigeon-icon.png"
-              alt=""
-              class="sim-pigeon-badge"
-              width="32"
-              height="32"
-            />
-            <div>
-              <div class="mono" style="font-size: 8.5px; color: var(--ghost-accent); letter-spacing: 0.14em;">
-                SEQUENTIAL FLOW
-              </div>
-              <div id="simStatusText" class="fade-swap" style="font-size: 11px; font-weight: 300; margin-top: 4px; letter-spacing: 0.03em;">
-                1/5 · Waking phone &amp; opening WhatsApp
-              </div>
-            </div>
-          </div>
-
-          <div class="sim-steps-row">
-            <span class="sim-pill is-current" data-sim-step="0">1. Open WA</span>
-            <span class="sim-pill" data-sim-step="1">2. Aarav ✓</span>
-            <span class="sim-pill" data-sim-step="2">3. Sara ✓</span>
-            <span class="sim-pill" data-sim-step="3">4. Rohan ✓</span>
-            <span class="sim-pill" data-sim-step="4">5. Close WA</span>
-          </div>
-        </div>
+        <h2 class="section-heading">
+          <span class="outlined-prefix">BUILT</span><span> FOR TWO JOBS</span>
+        </h2>
       </div>
-    </section>
 
-    <!-- ====================================================================
-         2 CORE USE CASES
-         ==================================================================== -->
-    <section class="section">
-      <div class="shell">
-        <div class="section__head" data-reveal>
+      <div class="usecase-grid">
+        <!-- Use Case 1: Broadcast -->
+        <article class="neu-card-lg usecase-card">
           <div>
-            <span class="paper-tag paper-tag--solid">2 USE CASES</span>
-          </div>
-          <h2 class="section__title">
-            Built for business reach and personal moments.
-          </h2>
-        </div>
-
-        <div class="usecases-grid">
-          <!-- USE CASE 01 -->
-          <article class="paper-sheet paper-sheet--accent paper-dogear usecase-card" data-reveal="left" style="--reveal-delay: 80ms;">
-            <div>
-              <div class="usecase-card__art-wrap">
-                <img
-                  src="assets/usecase-broadcast.png"
-                  alt="Paper-crafted one-by-one client broadcast queue"
-                  class="usecase-card__art"
-                />
+            <div class="usecase-card__top">
+              <div class="icon-well" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
               </div>
-
-              <div class="usecase-card__body">
-                <span class="paper-tag paper-tag--solid">USE CASE 01 · CLIENTS</span>
-                <h3 class="usecase-card__title">
-                  Unlimited Broadcasts with Custom <code>{name}</code> Without Getting Suspended
-                </h3>
-                <p class="usecase-card__pitch">
-                  Opens real WhatsApp and sends custom-named messages one by one. Zero ban risk.
-                </p>
-              </div>
+              <span class="pill-tag">Zero Ban Risk</span>
             </div>
-
-            <div class="wa-paper-bubble fade-swap" id="broadcastBubbleWrap">
-              <div id="broadcastResolvedText">
-                Hi Aarav Mehta, your priority pass is ready.
-              </div>
-              <div class="wa-paper-bubble__meta">
-                <span id="broadcastResolvedRecipient">Sent 1 by 1 · Aarav Mehta (1/48)</span>
-                <span>10:30 AM ✓✓</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- USE CASE 02 -->
-          <article class="paper-sheet paper-dogear usecase-card" data-reveal="right" style="--reveal-delay: 180ms;">
-            <div>
-              <div class="usecase-card__art-wrap">
-                <img
-                  src="assets/usecase-lovedones.png"
-                  alt="Paper-crafted calendar, heart, candle, and morning sun envelope"
-                  class="usecase-card__art"
-                />
-              </div>
-
-              <div class="usecase-card__body">
-                <span class="paper-tag paper-tag--solid">USE CASE 02 · LOVED ONES</span>
-                <h3 class="usecase-card__title">
-                  Anniversary, Birthday &amp; Daily Good Morning Messages on Time
-                </h3>
-                <p class="usecase-card__pitch">
-                  Set it once. Ghost wakes up on schedule and sends your wish. The app never forgets.
-                </p>
-              </div>
-            </div>
-
-            <div class="wa-paper-bubble fade-swap" id="occasionBubbleWrap">
-              <div id="occasionResolvedText">
-                Happy Anniversary my love! Right on the dot ❤️
-              </div>
-              <div class="wa-paper-bubble__meta">
-                <span id="occasionResolvedMeta">Ayesha · 12:00 AM Yearly</span>
-                <span>Auto-Sent ✓✓</span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         APP SCREENSHOTS
-         ==================================================================== -->
-    <section class="section">
-      <div class="shell">
-        <div class="section__head" data-reveal>
-          <div>
-            <span class="paper-tag">APP SCREENSHOTS</span>
-          </div>
-          <h2 class="section__title">
-            Inside Ghost.
-          </h2>
-        </div>
-
-        <div class="screens-grid">
-          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 60ms;">
-            <div class="screen-card__bezel">
-              <div class="screen-card__screen">
-                <img
-                  src="assets/screen-broadcast.png"
-                  alt="Custom Name Broadcast Screen"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-            <div>
-              <div class="screen-card__num">01 · BROADCAST</div>
-              <h3 class="screen-card__title">Custom {name} Queue</h3>
-            </div>
-          </article>
-
-          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 140ms;">
-            <div class="screen-card__bezel">
-              <div class="screen-card__screen">
-                <img
-                  src="assets/screen-live-send.png"
-                  alt="Live Auto-Pilot Screen"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-            <div>
-              <div class="screen-card__num">02 · AUTO-PILOT</div>
-              <h3 class="screen-card__title">Sends 1 by 1 in WA</h3>
-            </div>
-          </article>
-
-          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 220ms;">
-            <div class="screen-card__bezel">
-              <div class="screen-card__screen">
-                <img
-                  src="assets/screen-loved-ones.png"
-                  alt="Loved Ones Schedule Screen"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-            <div>
-              <div class="screen-card__num">03 · LOVED ONES</div>
-              <h3 class="screen-card__title">Never-Forget Schedule</h3>
-            </div>
-          </article>
-
-          <article class="paper-sheet screen-card" data-reveal style="--reveal-delay: 300ms;">
-            <div class="screen-card__bezel">
-              <div class="screen-card__screen">
-                <img
-                  src="assets/screen-setup.png"
-                  alt="Wake and Auto-Close Screen"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-            <div>
-              <div class="screen-card__num">04 · ENGINE</div>
-              <h3 class="screen-card__title">Wake &amp; Auto-Close</h3>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ====================================================================
-       FOOTER : "Put your WhatsApp on autopilot today."
-       ==================================================================== -->
-  <footer class="autopilot-footer" data-reveal style="--reveal-delay: 100ms;">
-    <div class="shell">
-      <div class="paper-sheet paper-sheet--accent paper-dogear autopilot-footer__sheet">
-        <div class="autopilot-footer__brand">
-          <img
-            src="assets/ghost-pigeon-icon.png"
-            alt="Ghost Icon"
-            class="autopilot-footer__icon"
-            width="46"
-            height="46"
-          />
-          <div>
-            <h2 class="autopilot-footer__title">
-              Put your WhatsApp on autopilot today.
-            </h2>
-            <p class="autopilot-footer__sub">
-              Opens WhatsApp · Sends 1 by 1 · Closes WhatsApp
+            <h3 class="usecase-card__title" style="margin-top: 18px;">
+              Unlimited Custom {name} Broadcasts
+            </h3>
+            <p class="usecase-card__desc">
+              Send personalized messages to hundreds of clients one by one on your real WhatsApp without getting suspended.
             </p>
           </div>
-        </div>
 
-        <div class="autopilot-footer__meta">
-          <span style="color: var(--ghost-accent);">GHOST FOR ANDROID</span>
-          <span>100% Controlled By The App</span>
-        </div>
+          <div class="neu-well-inset message-well">
+            <div class="message-well__meta">
+              <span id="broadcastRecipient">To: Aarav Mehta (1/48)</span>
+              <span class="message-well__status">Sent ✓✓</span>
+            </div>
+            <p id="broadcastPreviewText" class="message-well__bubble">
+              "Hey Aarav, our new collection is now live. Reply YES for early access."
+            </p>
+          </div>
+        </article>
+
+        <!-- Use Case 2: Never Forgets -->
+        <article class="neu-card-lg usecase-card">
+          <div>
+            <div class="usecase-card__top">
+              <div class="icon-well" aria-hidden="true">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </div>
+              <span class="pill-tag">Never Forgets</span>
+            </div>
+            <h3 class="usecase-card__title" style="margin-top: 18px;">
+              Birthdays, Anniversaries &amp; 7 AM Notes
+            </h3>
+            <p class="usecase-card__desc">
+              Set once for daily, weekly, or yearly cues. Ghost delivers while you sleep so you never miss a moment.
+            </p>
+          </div>
+
+          <div class="neu-well-inset message-well">
+            <div class="message-well__meta">
+              <span id="lovedRecipient">To: Mom · 07:00 AM Daily</span>
+              <span class="message-well__status">Scheduled ✓</span>
+            </div>
+            <p id="lovedPreviewText" class="message-well__bubble">
+              "Good morning Mom! Hope you have a peaceful and happy day today."
+            </p>
+          </div>
+        </article>
       </div>
-    </div>
-  </footer>
+    </section>
 
-  <script src="app.js" defer></script>
+    <!-- ========================================================================
+         4. REAL APP SCREENS SECTION
+         ======================================================================== -->
+    <section id="screens" class="section-block" aria-label="App Screens">
+      <div class="section-header">
+        <div class="pill-tag">
+          <span class="dot"></span>
+          <span>Interface</span>
+        </div>
+        <h2 class="section-heading">
+          <span class="outlined-prefix">INS</span><span>IDE THE APP</span>
+        </h2>
+      </div>
+
+      <div class="screens-grid">
+        <!-- Screen 1 -->
+        <article class="neu-card-md screen-card">
+          <div class="screen-bezel">
+            <img src="assets/screen-broadcast.png" alt="Ghost Broadcast Composer Screen" loading="lazy" />
+          </div>
+          <div>
+            <h3 class="title-text">01 · Compose</h3>
+            <p class="subtitle-text">Pick contacts &amp; {name}</p>
+          </div>
+        </article>
+
+        <!-- Screen 2 -->
+        <article class="neu-card-md screen-card">
+          <div class="screen-bezel">
+            <img src="assets/screen-live-send.png" alt="Ghost Live Dispatch Overlay Screen" loading="lazy" />
+          </div>
+          <div>
+            <h3 class="title-text">02 · Live Send</h3>
+            <p class="subtitle-text">1 by 1 auto-tap send</p>
+          </div>
+        </article>
+
+        <!-- Screen 3 -->
+        <article class="neu-card-md screen-card">
+          <div class="screen-bezel">
+            <img src="assets/screen-loved-ones.png" alt="Ghost Queue and Scheduled Tasks Screen" loading="lazy" />
+          </div>
+          <div>
+            <h3 class="title-text">03 · Queue</h3>
+            <p class="subtitle-text">Daily &amp; yearly cues</p>
+          </div>
+        </article>
+
+        <!-- Screen 4 -->
+        <article class="neu-card-md screen-card">
+          <div class="screen-bezel">
+            <img src="assets/screen-setup.png" alt="Ghost Setup and Permissions Screen" loading="lazy" />
+          </div>
+          <div>
+            <h3 class="title-text">04 · Setup</h3>
+            <p class="subtitle-text">Wake &amp; Auto-Tap</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         5. CLOSING FOOTER
+         ======================================================================== -->
+    <footer class="neu-card-lg site-footer">
+      <h2 class="footer-heading">
+        <span class="outlined-prefix">PUT</span><span> YOUR WHATSAPP ON AUTOPILOT TODAY.</span>
+      </h2>
+      <div class="footer-pills">
+        <span class="pill-tag">100% On-Device</span>
+        <span class="pill-tag">Zero Cloud</span>
+        <span class="pill-tag">WhatsApp &amp; Business</span>
+        <span class="pill-tag">Ghost v1.8.6</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================================================
+       VANILLA JAVASCRIPT: GAUGE, 4-STEP SEQUENCER & LIVE MESSAGE PREVIEWS
+       ======================================================================== -->
+  <script>
+    (function () {
+      const TOTAL_TICKS = 60;
+      const MAX_COUNT = 48;
+      const CENTER_X = 140;
+      const CENTER_Y = 126;
+      const OUTER_RADIUS = 108;
+
+      const STEP_STATES = [
+        { badge: '01 · Waking Screen on Cue', ratio: 0.25 },
+        { badge: '02 · Opening WhatsApp Chat', ratio: 0.50 },
+        { badge: '03 · Sending 1 by 1 with {name}', ratio: 0.80 },
+        { badge: '04 · Closing WhatsApp & Sleeping', ratio: 1.00 }
+      ];
+
+      const BROADCAST_SAMPLES = [
+        {
+          to: 'To: Aarav Mehta (1/48)',
+          text: '"Hey Aarav, our new collection is now live. Reply YES for early access."'
+        },
+        {
+          to: 'To: Priya Nair (2/48)',
+          text: '"Hey Priya, our new collection is now live. Reply YES for early access."'
+        },
+        {
+          to: 'To: Rohan Kapoor (3/48)',
+          text: '"Hey Rohan, our new collection is now live. Reply YES for early access."'
+        }
+      ];
+
+      const LOVED_SAMPLES = [
+        {
+          to: 'To: Mom · 07:00 AM Daily',
+          text: '"Good morning Mom! Hope you have a peaceful and happy day today."'
+        },
+        {
+          to: 'To: Wife · 12:00 AM Yearly',
+          text: '"Happy Anniversary! Grateful for every single day with you."'
+        },
+        {
+          to: 'To: Best Friend · 12:00 AM Birthday',
+          text: '"Happy Birthday! Wishing you the best year ahead."'
+        }
+      ];
+
+      const ticksGroup = document.getElementById('gaugeTicks');
+      const needleGroup = document.getElementById('gaugeNeedleGroup');
+      const gaugeValueText = document.getElementById('gaugeValueText');
+      const liveStepBadge = document.getElementById('liveStepBadge');
+      const heroToggle = document.getElementById('heroToggle');
+      const plusActionBtn = document.getElementById('plusActionBtn');
+      const nextStepBtn = document.getElementById('nextStepBtn');
+      const cycleStepBtn = document.getElementById('cycleStepBtn');
+      const stepRows = Array.from(document.querySelectorAll('.analytics-row'));
+
+      const broadcastRecipient = document.getElementById('broadcastRecipient');
+      const broadcastPreviewText = document.getElementById('broadcastPreviewText');
+      const lovedRecipient = document.getElementById('lovedRecipient');
+      const lovedPreviewText = document.getElementById('lovedPreviewText');
+
+      let currentGaugeRatio = 0;
+      let activeStepIndex = 0;
+      let sampleIndex = 0;
+
+      // Build 180-degree radial tick marks
+      function renderTicks(activeRatio) {
+        if (!ticksGroup) return;
+        ticksGroup.innerHTML = '';
+        const activeLimit = Math.round(TOTAL_TICKS * activeRatio);
+
+        for (let i = 0; i <= TOTAL_TICKS; i++) {
+          const isMajor = i % 5 === 0;
+          const tickLength = isMajor ? 13 : 7;
+          const innerRadius = OUTER_RADIUS - tickLength;
+
+          const deg = 180 - (i / TOTAL_TICKS) * 180;
+          const rad = (deg * Math.PI) / 180;
+
+          const x1 = CENTER_X + innerRadius * Math.cos(rad);
+          const y1 = CENTER_Y - innerRadius * Math.sin(rad);
+          const x2 = CENTER_X + OUTER_RADIUS * Math.cos(rad);
+          const y2 = CENTER_Y - OUTER_RADIUS * Math.sin(rad);
+
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', x1.toFixed(2));
+          line.setAttribute('y1', y1.toFixed(2));
+          line.setAttribute('x2', x2.toFixed(2));
+          line.setAttribute('y2', y2.toFixed(2));
+          line.setAttribute('stroke', i <= activeLimit ? '#3D4852' : '#9AA5B8');
+          line.setAttribute('stroke-width', isMajor ? '2' : '1.35');
+          line.setAttribute('stroke-linecap', 'round');
+          ticksGroup.appendChild(line);
+        }
+      }
+
+      // Animate needle rotation and counter readout
+      function animateNeedle(fromRatio, toRatio, durationMs) {
+        const startTime = performance.now();
+
+        function frame(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(1, elapsed / durationMs);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const ratio = fromRatio + (toRatio - fromRatio) * eased;
+          const angle = -90 + ratio * 180;
+
+          if (needleGroup) {
+            needleGroup.setAttribute('transform', `rotate(${angle.toFixed(2)} ${CENTER_X} ${CENTER_Y})`);
+          }
+          if (gaugeValueText) {
+            const count = Math.round(ratio * MAX_COUNT);
+            gaugeValueText.textContent = String(count).padStart(2, '0');
+          }
+          renderTicks(ratio);
+
+          if (progress < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            currentGaugeRatio = toRatio;
+          }
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      function setActiveStep(index) {
+        activeStepIndex = index % STEP_STATES.length;
+        stepRows.forEach((row, idx) => {
+          row.classList.toggle('is-active', idx === activeStepIndex);
+        });
+      }
+
+      // Auto-cycle through the 4 steps and message samples every 2.8s
+      setInterval(() => {
+        setActiveStep((activeStepIndex + 1) % STEP_STATES.length);
+
+        sampleIndex = (sampleIndex + 1) % BROADCAST_SAMPLES.length;
+        if (broadcastRecipient && broadcastPreviewText) {
+          broadcastRecipient.textContent = BROADCAST_SAMPLES[sampleIndex].to;
+          broadcastPreviewText.textContent = BROADCAST_SAMPLES[sampleIndex].text;
+        }
+        if (lovedRecipient && lovedPreviewText) {
+          lovedRecipient.textContent = LOVED_SAMPLES[sampleIndex].to;
+          lovedPreviewText.textContent = LOVED_SAMPLES[sampleIndex].text;
+        }
+      }, 2800);
+
+      // Toggle switch interaction
+      if (heroToggle) {
+        heroToggle.addEventListener('click', () => {
+          const isChecked = heroToggle.getAttribute('aria-checked') === 'true';
+          const nextChecked = !isChecked;
+          heroToggle.setAttribute('aria-checked', String(nextChecked));
+
+          if (nextChecked) {
+            setActiveStep(activeStepIndex);
+          } else {
+            if (liveStepBadge) liveStepBadge.textContent = 'Autopilot Paused';
+            animateNeedle(currentGaugeRatio, 0, 450);
+          }
+        });
+      }
+
+      stepRows.forEach((row, idx) => {
+        row.addEventListener('click', () => {
+          setActiveStep(idx);
+        });
+      });
+
+      if (nextStepBtn) {
+        nextStepBtn.addEventListener('click', () => {
+          setActiveStep((activeStepIndex + 1) % STEP_STATES.length);
+        });
+      }
+
+      if (cycleStepBtn) {
+        cycleStepBtn.addEventListener('click', () => {
+          setActiveStep((activeStepIndex + 1) % STEP_STATES.length);
+        });
+      }
+
+      if (plusActionBtn) {
+        plusActionBtn.addEventListener('click', () => {
+          plusActionBtn.classList.toggle('is-active');
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

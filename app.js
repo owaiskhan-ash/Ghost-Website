@@ -25,25 +25,7 @@
     revealElements.forEach((el) => el.classList.add('is-visible'));
   }
 
-  // 2. Subtle Smooth Scroll Depth on Wrinkled Paper Background
-  const paperBg = document.querySelector('.paper-bg');
-  let ticking = false;
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!ticking && paperBg) {
-        window.requestAnimationFrame(() => {
-          const offset = window.scrollY * 0.14;
-          paperBg.style.backgroundPosition = `center ${-offset}px`;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    },
-    { passive: true }
-  );
-
-  // 3. Auto-cycle the Autonomous Device Control 5-step sequential bar
+  // 2. Auto-cycle the Autonomous Device Control 5-step sequential bar
   const simStatusText = document.getElementById('simStatusText');
   const simPills = Array.from(document.querySelectorAll('[data-sim-step]'));
 

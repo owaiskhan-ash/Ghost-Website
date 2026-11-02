@@ -287,6 +287,48 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* Sleek Neumorphic Soft-UI Side Scroller (PC & Mobile) */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-button {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: var(--bg-base);
+      box-shadow: inset 2px 2px 4px #A3B1C6, inset -2px -2px 4px #FFFFFF;
+      border-radius: var(--radius-pill);
+      margin: 6px 0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #9AA8BC;
+      border-radius: var(--radius-pill);
+      border: 2px solid var(--bg-base);
+      min-height: 44px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active {
+      background-color: var(--accent-color);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background-color: var(--bg-base);
+    }
+
+    @supports not selector(::-webkit-scrollbar) {
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: #9AA8BC var(--bg-base);
+      }
+    }
+
     body {
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-weight: 400;
@@ -498,7 +540,7 @@
     .nav-pill-link:hover,
     .nav-pill-link:active {
       box-shadow: var(--shadow-inset-sm);
-      color: var(--accent-color);
+      color: var(--accent-text);
     }
 
     /* ==========================================================================
@@ -664,7 +706,7 @@
     .see-all-btn:hover,
     .see-all-btn:active {
       box-shadow: var(--shadow-inset-sm);
-      color: var(--accent-color);
+      color: var(--accent-text);
     }
 
     /* Right Column: Agent Status Pill & 4-Step Panel */
@@ -991,6 +1033,33 @@
         font-size: 1.75rem;
         letter-spacing: 0.12em;
       }
+
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+
+      ::-webkit-scrollbar-track {
+        box-shadow: none;
+        margin: 4px 0;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border-width: 1px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
@@ -1209,7 +1278,7 @@
               <!-- 4 Raised Pill List Rows -->
               <div class="analytics-list">
                 <!-- Step 1 -->
-                <button type="button" class="analytics-row is-active" data-step="0">
+                <button type="button" class="analytics-row is-active" data-step="0" aria-pressed="true">
                   <span class="analytics-row__left">
                     <span class="icon-well" aria-hidden="true">
                       <svg class="icon-svg" viewBox="0 0 24 24">
@@ -1230,7 +1299,7 @@
                 </button>
 
                 <!-- Step 2 -->
-                <button type="button" class="analytics-row" data-step="1">
+                <button type="button" class="analytics-row" data-step="1" aria-pressed="false">
                   <span class="analytics-row__left">
                     <span class="icon-well" aria-hidden="true">
                       <svg class="icon-svg" viewBox="0 0 24 24">
@@ -1250,7 +1319,7 @@
                 </button>
 
                 <!-- Step 3 -->
-                <button type="button" class="analytics-row" data-step="2">
+                <button type="button" class="analytics-row" data-step="2" aria-pressed="false">
                   <span class="analytics-row__left">
                     <span class="icon-well" aria-hidden="true">
                       <svg class="icon-svg" viewBox="0 0 24 24">
@@ -1271,7 +1340,7 @@
                 </button>
 
                 <!-- Step 4 -->
-                <button type="button" class="analytics-row" data-step="3">
+                <button type="button" class="analytics-row" data-step="3" aria-pressed="false">
                   <span class="analytics-row__left">
                     <span class="icon-well" aria-hidden="true">
                       <svg class="icon-svg" viewBox="0 0 24 24">
@@ -1539,24 +1608,31 @@
       function setActiveStep(index) {
         activeStepIndex = index % stepRows.length;
         stepRows.forEach((row, idx) => {
-          row.classList.toggle('is-active', idx === activeStepIndex);
+          const isActive = idx === activeStepIndex;
+          row.classList.toggle('is-active', isActive);
+          row.setAttribute('aria-pressed', isActive ? 'true' : 'false');
         });
       }
 
-      // Auto-cycle through the 4 steps and message samples every 2.8s
-      setInterval(() => {
-        setActiveStep((activeStepIndex + 1) % stepRows.length);
+      // Auto-cycle through the 4 steps and message samples every 2.8s (respecting prefers-reduced-motion)
+      const prefersReducedMotion =
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        sampleIndex = (sampleIndex + 1) % BROADCAST_SAMPLES.length;
-        if (broadcastRecipient && broadcastPreviewText) {
-          broadcastRecipient.textContent = BROADCAST_SAMPLES[sampleIndex].to;
-          broadcastPreviewText.textContent = BROADCAST_SAMPLES[sampleIndex].text;
-        }
-        if (lovedRecipient && lovedPreviewText) {
-          lovedRecipient.textContent = LOVED_SAMPLES[sampleIndex].to;
-          lovedPreviewText.textContent = LOVED_SAMPLES[sampleIndex].text;
-        }
-      }, 2800);
+      if (!prefersReducedMotion) {
+        setInterval(() => {
+          setActiveStep((activeStepIndex + 1) % stepRows.length);
+
+          sampleIndex = (sampleIndex + 1) % BROADCAST_SAMPLES.length;
+          if (broadcastRecipient && broadcastPreviewText) {
+            broadcastRecipient.textContent = BROADCAST_SAMPLES[sampleIndex].to;
+            broadcastPreviewText.textContent = BROADCAST_SAMPLES[sampleIndex].text;
+          }
+          if (lovedRecipient && lovedPreviewText) {
+            lovedRecipient.textContent = LOVED_SAMPLES[sampleIndex].to;
+            lovedPreviewText.textContent = LOVED_SAMPLES[sampleIndex].text;
+          }
+        }, 2800);
+      }
 
       stepRows.forEach((row, idx) => {
         row.addEventListener('click', () => {

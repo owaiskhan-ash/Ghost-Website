@@ -27,9 +27,48 @@
       --text-primary: #3D4852;
       --text-secondary: #556070;
       --accent-color: #5FB3B3;
+      --accent-text: #266868;
       --shadow-raised: 9px 9px 16px #A3B1C6, -9px -9px 16px #FFFFFF;
       --shadow-raised-sm: 5px 5px 10px #A3B1C6, -5px -5px 10px #FFFFFF;
       --shadow-inset-sm: inset 4px 4px 8px #A3B1C6, inset -4px -4px 8px #FFFFFF;
+    }
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-button {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: var(--bg-base);
+      box-shadow: inset 2px 2px 4px #A3B1C6, inset -2px -2px 4px #FFFFFF;
+      border-radius: 999px;
+      margin: 6px 0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #9AA8BC;
+      border-radius: 999px;
+      border: 2px solid var(--bg-base);
+      min-height: 44px;
+    }
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active {
+      background-color: var(--accent-color);
+    }
+    @media (max-width: 600px) {
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        box-shadow: none;
+        margin: 4px 0;
+      }
+      ::-webkit-scrollbar-thumb {
+        border-width: 1px;
+      }
     }
     * {
       box-sizing: border-box;
@@ -103,7 +142,7 @@
     .home-link:hover,
     .home-link:active {
       box-shadow: var(--shadow-inset-sm);
-      color: var(--accent-color);
+      color: var(--accent-text);
     }
   </style>
 </head>
@@ -111,8 +150,8 @@
   <main class="card">
     <div class="logo-well">
       <picture>
-        <source srcset="/assets/pigeon-white-nobg.webp" type="image/webp" />
-        <img src="/assets/pigeon-white-nobg.png" alt="Ghost White Pigeon Logo" width="64" height="64" />
+        <source srcset="/assets/pigeon-white-nobg.webp?v=4" type="image/webp" />
+        <img src="/assets/pigeon-white-nobg.png?v=4" alt="Ghost White Pigeon Logo" width="64" height="64" />
       </picture>
     </div>
     <h1>404 · Route Not Found</h1>

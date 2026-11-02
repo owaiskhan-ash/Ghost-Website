@@ -32,14 +32,14 @@
   />
   <link
     rel="preload"
-    href="assets/card-loved-ones.webp"
+    href="assets/card-loved-ones.webp?v=4"
     as="image"
     type="image/webp"
     fetchpriority="high"
   />
   <link
     rel="preload"
-    href="assets/card-client-lists.webp"
+    href="assets/card-client-lists.webp?v=4"
     as="image"
     type="image/webp"
     fetchpriority="high"
@@ -732,7 +732,7 @@
     .analytics-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .analytics-row {
@@ -740,7 +740,7 @@
       height: 64px;
       border-radius: var(--radius-pill);
       background-color: var(--bg-base);
-      box-shadow: var(--shadow-raised);
+      box-shadow: var(--shadow-raised-sm);
       padding: 8px 16px;
       display: flex;
       align-items: center;
@@ -753,7 +753,7 @@
     .analytics-row:hover,
     .analytics-row:active,
     .analytics-row.is-active {
-      box-shadow: var(--shadow-inset);
+      box-shadow: var(--shadow-inset-sm);
     }
 
     .analytics-row.is-active .icon-well {
@@ -897,8 +897,8 @@
       aspect-ratio: 1 / 2;
       border-radius: 22px;
       background-color: var(--bg-base);
-      box-shadow: var(--shadow-inset);
-      padding: 8px;
+      box-shadow: var(--shadow-inset-sm);
+      padding: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1003,9 +1003,9 @@
       <div class="brand-lockup">
         <div class="brand-icon-ring" aria-hidden="true" style="overflow: hidden; padding: 6px;">
           <picture style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-            <source srcset="assets/pigeon-white-nobg.webp" type="image/webp" />
+            <source srcset="assets/pigeon-white-nobg.webp?v=4" type="image/webp" />
             <img
-              src="assets/pigeon-white-nobg.png"
+              src="assets/pigeon-white-nobg.png?v=4"
               alt="Ghost White Pigeon Logo"
               width="64"
               height="64"
@@ -1075,9 +1075,9 @@
                 </div>
                 <div class="square-card__art">
                   <picture>
-                    <source srcset="assets/card-loved-ones.webp" type="image/webp" />
+                    <source srcset="assets/card-loved-ones.webp?v=4" type="image/webp" />
                     <img
-                      src="assets/card-loved-ones.png"
+                      src="assets/card-loved-ones.png?v=4"
                       alt="Soft UI 3D heart clock scheduled at 7 AM for loved ones"
                       width="600"
                       height="600"
@@ -1110,9 +1110,9 @@
                 </div>
                 <div class="square-card__art">
                   <picture>
-                    <source srcset="assets/card-client-lists.webp" type="image/webp" />
+                    <source srcset="assets/card-client-lists.webp?v=4" type="image/webp" />
                     <img
-                      src="assets/card-client-lists.png"
+                      src="assets/card-client-lists.png?v=4"
                       alt="Soft UI 3D sequential client broadcast envelopes"
                       width="600"
                       height="600"
@@ -1155,9 +1155,9 @@
                 <div class="avatar-ring" aria-hidden="true">
                   <div class="avatar-slot" style="overflow: hidden; padding: 6px;">
                     <picture style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                      <source srcset="assets/pigeon-white-nobg.webp" type="image/webp" />
+                      <source srcset="assets/pigeon-white-nobg.webp?v=4" type="image/webp" />
                       <img
-                        src="assets/pigeon-white-nobg.png"
+                        src="assets/pigeon-white-nobg.png?v=4"
                         alt="Ghost White Pigeon Logo"
                         width="64"
                         height="64"
@@ -1391,9 +1391,9 @@
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
               <picture>
-                <source srcset="assets/screen-broadcast.webp" type="image/webp" />
+                <source srcset="assets/screen-broadcast.webp?v=4" type="image/webp" />
                 <img
-                  src="assets/screen-broadcast.png"
+                  src="assets/screen-broadcast.png?v=4"
                   alt="Ghost Broadcast Composer Screen with Contacts and {name} Variables"
                   width="800"
                   height="1600"
@@ -1412,9 +1412,9 @@
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
               <picture>
-                <source srcset="assets/screen-live-send.webp" type="image/webp" />
+                <source srcset="assets/screen-live-send.webp?v=4" type="image/webp" />
                 <img
-                  src="assets/screen-live-send.png"
+                  src="assets/screen-live-send.png?v=4"
                   alt="Ghost Live Dispatch Overlay Screen Sending Messages One by One"
                   width="800"
                   height="1600"
@@ -1433,9 +1433,9 @@
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
               <picture>
-                <source srcset="assets/screen-loved-ones.webp" type="image/webp" />
+                <source srcset="assets/screen-loved-ones.webp?v=4" type="image/webp" />
                 <img
-                  src="assets/screen-loved-ones.png"
+                  src="assets/screen-loved-ones.png?v=4"
                   alt="Ghost Queue and Scheduled Tasks Screen for Daily and Yearly Cues"
                   width="800"
                   height="1600"
@@ -1454,9 +1454,9 @@
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
               <picture>
-                <source srcset="assets/screen-setup.webp" type="image/webp" />
+                <source srcset="assets/screen-setup.webp?v=4" type="image/webp" />
                 <img
-                  src="assets/screen-setup.png"
+                  src="assets/screen-setup.png?v=4"
                   alt="Ghost Setup and Android Permissions Screen for Auto-Tap and Exact Wake"
                   width="800"
                   height="1600"

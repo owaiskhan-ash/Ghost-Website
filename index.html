@@ -3,12 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GHOST · WhatsApp Autopilot</title>
+  <title>Ghost · WhatsApp Scheduler &amp; Broadcast Autopilot for Android</title>
   <meta
     name="description"
-    content="Schedule once. Ghost wakes your phone, opens WhatsApp, types every message one by one, taps Send, and locks the screen."
+    content="Schedule WhatsApp &amp; WA Business messages once. Ghost wakes your Android phone, opens WhatsApp, sends custom {name} broadcasts 1 by 1, and locks the screen."
+  />
+  <meta
+    name="robots"
+    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
   />
   <meta name="theme-color" content="#E0E5EC" />
+  <link rel="canonical" href="https://ghost.justsimpleapps.online/" />
+
+  <!-- Preload Self-Hosted WOFF2 Fonts for Zero-FOIT & Faster LCP -->
+  <link
+    rel="preload"
+    href="assets/fonts/inter-latin-300-normal.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="assets/fonts/inter-latin-400-normal.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
 
   <!-- Transparent White Pigeon PNG Favicon & App Icons (No Background) -->
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png?v=3" />
@@ -19,12 +40,15 @@
 
   <!-- Open Graph / Social Share Meta Tags -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ghost" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://ghost.justsimpleapps.online/" />
   <meta property="og:title" content="GHOST · Autopilot for WhatsApp" />
   <meta
     property="og:description"
     content="Wakes on Cue · Opens WhatsApp · Sends 1 by 1 · Closes WhatsApp. 100% On-Device Android Autopilot."
   />
-  <meta property="og:image" content="assets/og-image.png?v=3" />
+  <meta property="og:image" content="https://ghost.justsimpleapps.online/assets/og-image.png?v=3" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -35,7 +59,77 @@
     name="twitter:description"
     content="Wakes on Cue · Opens WhatsApp · Sends 1 by 1 · Closes WhatsApp. 100% On-Device Android Autopilot."
   />
-  <meta name="twitter:image" content="assets/og-image.png?v=3" />
+  <meta name="twitter:image" content="https://ghost.justsimpleapps.online/assets/og-image.png?v=3" />
+
+  <!-- Schema.org Structured Data (WebSite + SoftwareApplication + HowTo) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://ghost.justsimpleapps.online/#website",
+          "url": "https://ghost.justsimpleapps.online/",
+          "name": "Ghost · WhatsApp Autopilot",
+          "description": "100% on-device Android WhatsApp scheduler and sequential broadcast autopilot."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://ghost.justsimpleapps.online/#app",
+          "name": "Ghost",
+          "operatingSystem": "Android 8.0+",
+          "applicationCategory": "CommunicationApplication",
+          "softwareVersion": "1.8.6",
+          "description": "Autonomous Android courier that wakes your phone on schedule, opens WhatsApp or WA Business, types personalized {name} messages one by one, taps Send, and locks the screen.",
+          "image": "https://ghost.justsimpleapps.online/assets/og-image.png",
+          "screenshot": [
+            "https://ghost.justsimpleapps.online/assets/screen-broadcast.png",
+            "https://ghost.justsimpleapps.online/assets/screen-live-send.png",
+            "https://ghost.justsimpleapps.online/assets/screen-loved-ones.png",
+            "https://ghost.justsimpleapps.online/assets/screen-setup.png"
+          ],
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "HowTo",
+          "@id": "https://ghost.justsimpleapps.online/#howto",
+          "name": "How Ghost Automates WhatsApp Messages on Android",
+          "description": "4-step autonomous on-device control that dispatches scheduled WhatsApp messages hands-free.",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Wakes on Cue",
+              "text": "Ghost lights up your Android screen at the exact scheduled minute."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Opens WhatsApp",
+              "text": "Launches WhatsApp or WA Business, finds the contact chat, and types custom {name} variables."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Sends One by One",
+              "text": "Taps Send sequentially at a natural human pace with zero ban risk."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Closes WhatsApp",
+              "text": "Exits WhatsApp back to the home screen and lets the display lock."
+            }
+          ]
+        }
+      ]
+    }
+  </script>
+
   <style>
     /* ==========================================================================
        1. Self-Hosted Thin & Normal Fonts + CSS Custom Properties
@@ -139,11 +233,6 @@
       font-weight: 300;
       color: var(--text-secondary);
       margin-top: 2px;
-    }
-
-    .outlined-prefix {
-      color: inherit;
-      -webkit-text-stroke: 0;
     }
 
     /* ==========================================================================
@@ -252,7 +341,12 @@
       gap: 72px;
     }
 
-    /* Top Neumorphic Header Bar */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 72px;
+    }
+
     .site-header {
       height: 72px;
       padding: 10px 22px;
@@ -359,155 +453,6 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 24px;
-    }
-
-    /* Left Column: Hero Control Card */
-    .hero-card {
-      padding: 24px;
-      min-height: 260px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .hero-card__top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .hero-card__identity {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    /* Pill Toggle Switch */
-    .neu-toggle {
-      width: 72px;
-      height: 36px;
-      border-radius: var(--radius-pill);
-      background-color: var(--bg-base);
-      box-shadow: var(--shadow-inset-sm);
-      padding: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      transition: all 0.2s ease;
-    }
-
-    .neu-toggle__icon {
-      width: 28px;
-      height: 28px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--icon-color);
-      z-index: 1;
-      transition: all 0.2s ease;
-    }
-
-    .neu-toggle[aria-checked="true"] .neu-toggle__icon {
-      color: var(--accent-color);
-    }
-
-    .neu-toggle__knob {
-      width: 28px;
-      height: 28px;
-      border-radius: var(--radius-circle);
-      background-color: var(--bg-base);
-      box-shadow: var(--shadow-raised-sm);
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .neu-toggle[aria-checked="true"] .neu-toggle__knob {
-      transform: translateX(36px);
-    }
-
-    .neu-toggle[aria-checked="true"] {
-      box-shadow: var(--shadow-inset);
-    }
-
-    /* Small Pill Badge */
-    .hero-badge-row {
-      display: flex;
-      align-items: center;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: var(--radius-pill);
-      background-color: var(--bg-base);
-      box-shadow: var(--shadow-inset-sm);
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-
-    .hero-badge .icon-svg {
-      width: 15px;
-      height: 15px;
-      color: var(--accent-color);
-    }
-
-    /* Semicircular Gauge */
-    .gauge-container {
-      position: relative;
-      width: 100%;
-      max-width: 300px;
-      margin: 4px auto 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .gauge-svg {
-      width: 100%;
-      height: auto;
-      overflow: visible;
-      display: block;
-    }
-
-    .gauge-readout {
-      margin-top: -28px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .gauge-readout__number-row {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 5px;
-    }
-
-    .gauge-readout__value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1;
-      letter-spacing: -0.02em;
-    }
-
-    .gauge-readout__unit {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .gauge-readout__caption {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-top: 4px;
     }
 
     /* Two-Up Card Row */
@@ -916,6 +861,10 @@
         gap: 52px;
       }
 
+      .main-content {
+        gap: 52px;
+      }
+
       .site-header {
         height: auto;
         padding: 14px 18px;
@@ -945,12 +894,13 @@
           <img
             src="assets/pigeon-white-nobg.png"
             alt="Ghost White Pigeon Logo"
+            width="64"
+            height="64"
+            decoding="async"
             style="width: 100%; height: 100%; object-fit: contain; display: block;"
           />
         </div>
-        <span class="brand-wordmark">
-          <span class="outlined-prefix">GH</span><span>OST</span>
-        </span>
+        <span class="brand-wordmark">GHOST</span>
       </div>
 
       <nav class="header-nav" aria-label="Section navigation">
@@ -961,403 +911,439 @@
     </header>
 
     <!-- ========================================================================
-         2. HERO LANDING SECTION & INTERACTIVE HOW-IT-WORKS DASHBOARD
+         MAIN LANDMARK WRAPPING ALL PRIMARY SECTIONS
          ======================================================================== -->
-    <section id="how-it-works" class="hero-section" aria-label="Hero and How Ghost Works">
-      <div class="hero-intro">
-        <div class="pill-tag">
-          <span class="dot"></span>
-          <span>Autonomous Android Courier</span>
-        </div>
-        <h1 class="hero-heading">
-          <span class="outlined-prefix">AUT</span><span>OPILOT FOR WHATSAPP</span>
-        </h1>
-        <p class="hero-subtitle">
-          Schedule once. Ghost wakes your phone, opens WhatsApp, types every message one by one, taps Send, and locks the screen.
-        </p>
-      </div>
-
-      <!-- Two-Column Neumorphic Interactive Showcase -->
-      <main class="dashboard-grid">
-        <!-- LEFT COLUMN -->
-        <div class="dashboard-col">
-          <!-- 1. Two-Up Card Row -->
-          <div class="two-up-row">
-            <!-- Card 1: Sun Icon -->
-            <article class="neu-card-md square-card">
-              <div class="square-card__top">
-                <div class="icon-well" aria-hidden="true">
-                  <svg class="icon-svg" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <line x1="12" y1="2.5" x2="12" y2="5"></line>
-                    <line x1="12" y1="19" x2="12" y2="21.5"></line>
-                    <line x1="4.22" y1="4.22" x2="5.98" y2="5.98"></line>
-                    <line x1="18.02" y1="18.02" x2="19.78" y2="19.78"></line>
-                    <line x1="2.5" y1="12" x2="5" y2="12"></line>
-                    <line x1="19" y1="12" x2="21.5" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.98" y2="18.02"></line>
-                    <line x1="18.02" y1="5.98" x2="19.78" y2="4.22"></line>
-                  </svg>
-                </div>
-                <button type="button" class="icon-btn" aria-label="Morning schedule">
-                  <svg class="icon-svg" viewBox="0 0 24 24">
-                    <circle cx="6" cy="12" r="1"></circle>
-                    <circle cx="12" cy="12" r="1"></circle>
-                    <circle cx="18" cy="12" r="1"></circle>
-                  </svg>
-                </button>
-              </div>
-              <div class="square-card__art">
-                <img
-                  src="assets/card-loved-ones.png"
-                  alt="Soft UI 3D heart clock scheduled at 7 AM"
-                />
-              </div>
-              <div class="square-card__bottom">
-                <h3 class="title-text">Loved Ones</h3>
-                <p class="subtitle-text">Birthdays &amp; 7 AM Notes</p>
-              </div>
-            </article>
-
-            <!-- Card 2: Moon Icon -->
-            <article class="neu-card-md square-card">
-              <div class="square-card__top">
-                <div class="icon-well" aria-hidden="true">
-                  <svg class="icon-svg" viewBox="0 0 24 24">
-                    <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"></path>
-                  </svg>
-                </div>
-                <button type="button" class="icon-btn" aria-label="Client broadcast options">
-                  <svg class="icon-svg" viewBox="0 0 24 24">
-                    <circle cx="6" cy="12" r="1"></circle>
-                    <circle cx="12" cy="12" r="1"></circle>
-                    <circle cx="18" cy="12" r="1"></circle>
-                  </svg>
-                </button>
-              </div>
-              <div class="square-card__art">
-                <img
-                  src="assets/card-client-lists.png"
-                  alt="Soft UI 3D sequential client broadcast envelopes"
-                />
-              </div>
-              <div class="square-card__bottom">
-                <h3 class="title-text">Client Lists</h3>
-                <p class="subtitle-text">Unlimited {name} Sends</p>
-              </div>
-            </article>
+    <main id="main-content" class="main-content">
+      <!-- ======================================================================
+           2. HERO LANDING SECTION & INTERACTIVE HOW-IT-WORKS DASHBOARD
+           ====================================================================== -->
+      <section id="how-it-works" class="hero-section" aria-label="Hero and How Ghost Works">
+        <div class="hero-intro">
+          <div class="pill-tag">
+            <span class="dot"></span>
+            <span>Autonomous Android Courier</span>
           </div>
-
-          <!-- 2. Bottom Action Bar -->
-          <div class="neu-pill action-bar">
-            <div class="action-bar__left">
-              <button type="button" id="plusActionBtn" class="plus-btn" aria-label="Step trigger">
-                <svg class="icon-svg" viewBox="0 0 24 24">
-                  <line x1="12" y1="6" x2="12" y2="18"></line>
-                  <line x1="6" y1="12" x2="18" y2="12"></line>
-                </svg>
-              </button>
-              <div>
-                <div class="title-text">100% On-Device</div>
-                <div class="subtitle-text">No Cloud · Volume-Down Stop</div>
-              </div>
-            </div>
-
-            <button type="button" id="cycleStepBtn" class="see-all-btn">Next Step</button>
-          </div>
+          <h1 class="hero-heading">AUTOPILOT FOR WHATSAPP</h1>
+          <p class="hero-subtitle">
+            Schedule once. Ghost wakes your phone, opens WhatsApp, types every message one by one, taps Send, and locks the screen.
+          </p>
         </div>
 
-        <!-- RIGHT COLUMN -->
-        <div class="dashboard-col">
-          <!-- 1. Agent Status Pill -->
-          <div class="neu-pill profile-pill">
-            <div class="profile-pill__left">
-              <div class="avatar-ring" aria-hidden="true">
-                <div class="avatar-slot" style="overflow: hidden; padding: 6px;">
+        <!-- Two-Column Neumorphic Interactive Showcase -->
+        <div class="dashboard-grid">
+          <!-- LEFT COLUMN -->
+          <div class="dashboard-col">
+            <!-- 1. Two-Up Card Row -->
+            <div class="two-up-row">
+              <!-- Card 1: Sun Icon -->
+              <article class="neu-card-md square-card">
+                <div class="square-card__top">
+                  <div class="icon-well" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="4"></circle>
+                      <line x1="12" y1="2.5" x2="12" y2="5"></line>
+                      <line x1="12" y1="19" x2="12" y2="21.5"></line>
+                      <line x1="4.22" y1="4.22" x2="5.98" y2="5.98"></line>
+                      <line x1="18.02" y1="18.02" x2="19.78" y2="19.78"></line>
+                      <line x1="2.5" y1="12" x2="5" y2="12"></line>
+                      <line x1="19" y1="12" x2="21.5" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.98" y2="18.02"></line>
+                      <line x1="18.02" y1="5.98" x2="19.78" y2="4.22"></line>
+                    </svg>
+                  </div>
+                  <button type="button" class="icon-btn" aria-label="Morning schedule">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <circle cx="6" cy="12" r="1"></circle>
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="18" cy="12" r="1"></circle>
+                    </svg>
+                  </button>
+                </div>
+                <div class="square-card__art">
                   <img
-                    src="assets/pigeon-white-nobg.png"
-                    alt="Ghost White Pigeon Logo"
-                    style="width: 100%; height: 100%; object-fit: contain; display: block;"
+                    src="assets/card-loved-ones.png"
+                    alt="Soft UI 3D heart clock scheduled at 7 AM for loved ones"
+                    width="600"
+                    height="600"
+                    fetchpriority="high"
+                    decoding="async"
                   />
                 </div>
-              </div>
-              <div>
-                <div class="title-text">Ghost Android Agent</div>
-                <div class="subtitle-text">Works on WhatsApp &amp; WA Business</div>
-              </div>
+                <div class="square-card__bottom">
+                  <h2 class="title-text">Loved Ones</h2>
+                  <p class="subtitle-text">Birthdays &amp; 7 AM Notes</p>
+                </div>
+              </article>
+
+              <!-- Card 2: Moon Icon -->
+              <article class="neu-card-md square-card">
+                <div class="square-card__top">
+                  <div class="icon-well" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"></path>
+                    </svg>
+                  </div>
+                  <button type="button" class="icon-btn" aria-label="Client broadcast options">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <circle cx="6" cy="12" r="1"></circle>
+                      <circle cx="12" cy="12" r="1"></circle>
+                      <circle cx="18" cy="12" r="1"></circle>
+                    </svg>
+                  </button>
+                </div>
+                <div class="square-card__art">
+                  <img
+                    src="assets/card-client-lists.png"
+                    alt="Soft UI 3D sequential client broadcast envelopes"
+                    width="600"
+                    height="600"
+                    fetchpriority="high"
+                    decoding="async"
+                  />
+                </div>
+                <div class="square-card__bottom">
+                  <h2 class="title-text">Client Lists</h2>
+                  <p class="subtitle-text">Unlimited {name} Sends</p>
+                </div>
+              </article>
             </div>
 
-            <button type="button" class="icon-btn" aria-label="Agent status">
-              <svg class="icon-svg" viewBox="0 0 24 24">
-                <circle cx="12" cy="6" r="1"></circle>
-                <circle cx="12" cy="12" r="1"></circle>
-                <circle cx="12" cy="18" r="1"></circle>
-              </svg>
-            </button>
-          </div>
-
-          <!-- 2. How Ghost Works Panel (4-Step Autonomous Flow) -->
-          <article class="neu-card-lg analytics-panel">
-            <div class="analytics-panel__header">
-              <div class="analytics-panel__identity">
-                <div class="icon-well" aria-hidden="true">
+            <!-- 2. Bottom Action Bar -->
+            <div class="neu-pill action-bar">
+              <div class="action-bar__left">
+                <button type="button" id="plusActionBtn" class="plus-btn" aria-label="Step trigger">
                   <svg class="icon-svg" viewBox="0 0 24 24">
-                    <polyline points="4 16 9 11 13 14 20 7"></polyline>
-                    <polyline points="16 7 20 7 20 11"></polyline>
+                    <line x1="12" y1="6" x2="12" y2="18"></line>
+                    <line x1="6" y1="12" x2="18" y2="12"></line>
                   </svg>
-                </div>
+                </button>
                 <div>
-                  <h2 class="title-text">How Ghost Works</h2>
-                  <p class="subtitle-text">4-Step Autonomous Device Control</p>
+                  <div class="title-text">100% On-Device</div>
+                  <div class="subtitle-text">No Cloud · Volume-Down Stop</div>
                 </div>
               </div>
 
-              <button type="button" id="nextStepBtn" class="icon-btn" aria-label="Cycle step">
+              <button type="button" id="cycleStepBtn" class="see-all-btn">Next Step</button>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="dashboard-col">
+            <!-- 1. Agent Status Pill -->
+            <div class="neu-pill profile-pill">
+              <div class="profile-pill__left">
+                <div class="avatar-ring" aria-hidden="true">
+                  <div class="avatar-slot" style="overflow: hidden; padding: 6px;">
+                    <img
+                      src="assets/pigeon-white-nobg.png"
+                      alt="Ghost White Pigeon Logo"
+                      width="64"
+                      height="64"
+                      decoding="async"
+                      style="width: 100%; height: 100%; object-fit: contain; display: block;"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div class="title-text">Ghost Android Agent</div>
+                  <div class="subtitle-text">Works on WhatsApp &amp; WA Business</div>
+                </div>
+              </div>
+
+              <button type="button" class="icon-btn" aria-label="Agent status">
                 <svg class="icon-svg" viewBox="0 0 24 24">
-                  <line x1="6" y1="12" x2="18" y2="12"></line>
-                  <polyline points="13 7 18 12 13 17"></polyline>
+                  <circle cx="12" cy="6" r="1"></circle>
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="12" cy="18" r="1"></circle>
                 </svg>
               </button>
             </div>
 
-            <!-- 4 Raised Pill List Rows -->
-            <div class="analytics-list" role="list">
-              <!-- Step 1 -->
-              <button type="button" class="analytics-row is-active" data-step="0" role="listitem">
-                <span class="analytics-row__left">
-                  <span class="icon-well" aria-hidden="true">
+            <!-- 2. How Ghost Works Panel (4-Step Autonomous Flow) -->
+            <article class="neu-card-lg analytics-panel">
+              <div class="analytics-panel__header">
+                <div class="analytics-panel__identity">
+                  <div class="icon-well" aria-hidden="true">
                     <svg class="icon-svg" viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="8"></circle>
-                      <path d="M12 7v5l3.5 2"></path>
+                      <polyline points="4 16 9 11 13 14 20 7"></polyline>
+                      <polyline points="16 7 20 7 20 11"></polyline>
                     </svg>
-                  </span>
-                  <span>
-                    <span class="title-text" style="display: block;">01 · Wakes on Cue</span>
-                    <span class="subtitle-text" style="display: block;">Lights up screen on exact time</span>
-                  </span>
-                </span>
-                <span class="chevron-icon" aria-hidden="true">
-                  <svg class="icon-svg" viewBox="0 0 24 24">
-                    <polyline points="9 6 15 12 9 18"></polyline>
-                  </svg>
-                </span>
-              </button>
+                  </div>
+                  <div>
+                    <h2 class="title-text">How Ghost Works</h2>
+                    <p class="subtitle-text">4-Step Autonomous Device Control</p>
+                  </div>
+                </div>
 
-              <!-- Step 2 -->
-              <button type="button" class="analytics-row" data-step="1" role="listitem">
-                <span class="analytics-row__left">
-                  <span class="icon-well" aria-hidden="true">
-                    <svg class="icon-svg" viewBox="0 0 24 24">
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                    </svg>
-                  </span>
-                  <span>
-                    <span class="title-text" style="display: block;">02 · Opens WhatsApp</span>
-                    <span class="subtitle-text" style="display: block;">Finds contact &amp; types {name}</span>
-                  </span>
-                </span>
-                <span class="chevron-icon" aria-hidden="true">
+                <button type="button" id="nextStepBtn" class="icon-btn" aria-label="Cycle step">
                   <svg class="icon-svg" viewBox="0 0 24 24">
-                    <polyline points="9 6 15 12 9 18"></polyline>
+                    <line x1="6" y1="12" x2="18" y2="12"></line>
+                    <polyline points="13 7 18 12 13 17"></polyline>
                   </svg>
-                </span>
-              </button>
+                </button>
+              </div>
 
-              <!-- Step 3 -->
-              <button type="button" class="analytics-row" data-step="2" role="listitem">
-                <span class="analytics-row__left">
-                  <span class="icon-well" aria-hidden="true">
+              <!-- 4 Raised Pill List Rows -->
+              <div class="analytics-list" role="list">
+                <!-- Step 1 -->
+                <button type="button" class="analytics-row is-active" data-step="0" role="listitem">
+                  <span class="analytics-row__left">
+                    <span class="icon-well" aria-hidden="true">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="8"></circle>
+                        <path d="M12 7v5l3.5 2"></path>
+                      </svg>
+                    </span>
+                    <span>
+                      <span class="title-text" style="display: block;">01 · Wakes on Cue</span>
+                      <span class="subtitle-text" style="display: block;">Lights up screen on exact time</span>
+                    </span>
+                  </span>
+                  <span class="chevron-icon" aria-hidden="true">
                     <svg class="icon-svg" viewBox="0 0 24 24">
-                      <line x1="22" y1="2" x2="11" y2="13"></line>
-                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      <polyline points="9 6 15 12 9 18"></polyline>
                     </svg>
                   </span>
-                  <span>
-                    <span class="title-text" style="display: block;">03 · Sends One by One</span>
-                    <span class="subtitle-text" style="display: block;">Taps Send at natural human pace</span>
-                  </span>
-                </span>
-                <span class="chevron-icon" aria-hidden="true">
-                  <svg class="icon-svg" viewBox="0 0 24 24">
-                    <polyline points="9 6 15 12 9 18"></polyline>
-                  </svg>
-                </span>
-              </button>
+                </button>
 
-              <!-- Step 4 -->
-              <button type="button" class="analytics-row" data-step="3" role="listitem">
-                <span class="analytics-row__left">
-                  <span class="icon-well" aria-hidden="true">
+                <!-- Step 2 -->
+                <button type="button" class="analytics-row" data-step="1" role="listitem">
+                  <span class="analytics-row__left">
+                    <span class="icon-well" aria-hidden="true">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                      </svg>
+                    </span>
+                    <span>
+                      <span class="title-text" style="display: block;">02 · Opens WhatsApp</span>
+                      <span class="subtitle-text" style="display: block;">Finds contact &amp; types {name}</span>
+                    </span>
+                  </span>
+                  <span class="chevron-icon" aria-hidden="true">
                     <svg class="icon-svg" viewBox="0 0 24 24">
-                      <rect x="5" y="11" width="14" height="10" rx="2"></rect>
-                      <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                      <polyline points="9 6 15 12 9 18"></polyline>
                     </svg>
                   </span>
-                  <span>
-                    <span class="title-text" style="display: block;">04 · Closes WhatsApp</span>
-                    <span class="subtitle-text" style="display: block;">Exits app &amp; locks screen</span>
+                </button>
+
+                <!-- Step 3 -->
+                <button type="button" class="analytics-row" data-step="2" role="listitem">
+                  <span class="analytics-row__left">
+                    <span class="icon-well" aria-hidden="true">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      </svg>
+                    </span>
+                    <span>
+                      <span class="title-text" style="display: block;">03 · Sends One by One</span>
+                      <span class="subtitle-text" style="display: block;">Taps Send at natural human pace</span>
+                    </span>
                   </span>
-                </span>
-                <span class="chevron-icon" aria-hidden="true">
+                  <span class="chevron-icon" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <polyline points="9 6 15 12 9 18"></polyline>
+                    </svg>
+                  </span>
+                </button>
+
+                <!-- Step 4 -->
+                <button type="button" class="analytics-row" data-step="3" role="listitem">
+                  <span class="analytics-row__left">
+                    <span class="icon-well" aria-hidden="true">
+                      <svg class="icon-svg" viewBox="0 0 24 24">
+                        <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                        <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                      </svg>
+                    </span>
+                    <span>
+                      <span class="title-text" style="display: block;">04 · Closes WhatsApp</span>
+                      <span class="subtitle-text" style="display: block;">Exits app &amp; locks screen</span>
+                    </span>
+                  </span>
+                  <span class="chevron-icon" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                      <polyline points="9 6 15 12 9 18"></polyline>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           3. CORE USE CASES SECTION
+           ====================================================================== -->
+      <section id="use-cases" class="section-block" aria-label="Core Use Cases">
+        <div class="section-header">
+          <div class="pill-tag">
+            <span class="dot"></span>
+            <span>Core Use Cases</span>
+          </div>
+          <h2 class="section-heading">BUILT FOR TWO JOBS</h2>
+        </div>
+
+        <div class="usecase-grid">
+          <!-- Use Case 1: Broadcast -->
+          <article class="neu-card-lg usecase-card">
+            <div>
+              <div class="usecase-card__top">
+                <div class="icon-well" aria-hidden="true">
                   <svg class="icon-svg" viewBox="0 0 24 24">
-                    <polyline points="9 6 15 12 9 18"></polyline>
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                   </svg>
-                </span>
-              </button>
+                </div>
+                <span class="pill-tag">Zero Ban Risk</span>
+              </div>
+              <h3 class="usecase-card__title" style="margin-top: 18px;">
+                Unlimited Custom {name} Broadcasts
+              </h3>
+              <p class="usecase-card__desc">
+                Send personalized messages to hundreds of clients one by one on your real WhatsApp without getting suspended.
+              </p>
+            </div>
+
+            <div class="neu-well-inset message-well">
+              <div class="message-well__meta">
+                <span id="broadcastRecipient">To: Aarav Mehta (1/48)</span>
+                <span class="message-well__status">Sent ✓✓</span>
+              </div>
+              <p id="broadcastPreviewText" class="message-well__bubble">
+                "Hey Aarav, our new collection is now live. Reply YES for early access."
+              </p>
+            </div>
+          </article>
+
+          <!-- Use Case 2: Never Forgets -->
+          <article class="neu-card-lg usecase-card">
+            <div>
+              <div class="usecase-card__top">
+                <div class="icon-well" aria-hidden="true">
+                  <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </div>
+                <span class="pill-tag">Never Forgets</span>
+              </div>
+              <h3 class="usecase-card__title" style="margin-top: 18px;">
+                Birthdays, Anniversaries &amp; 7 AM Notes
+              </h3>
+              <p class="usecase-card__desc">
+                Set once for daily, weekly, or yearly cues. Ghost delivers while you sleep so you never miss a moment.
+              </p>
+            </div>
+
+            <div class="neu-well-inset message-well">
+              <div class="message-well__meta">
+                <span id="lovedRecipient">To: Mom · 07:00 AM Daily</span>
+                <span class="message-well__status">Scheduled ✓</span>
+              </div>
+              <p id="lovedPreviewText" class="message-well__bubble">
+                "Good morning Mom! Hope you have a peaceful and happy day today."
+              </p>
             </div>
           </article>
         </div>
-      </main>
-    </section>
+      </section>
 
-    <!-- ========================================================================
-         3. CORE USE CASES SECTION
-         ======================================================================== -->
-    <section id="use-cases" class="section-block" aria-label="Core Use Cases">
-      <div class="section-header">
-        <div class="pill-tag">
-          <span class="dot"></span>
-          <span>Core Use Cases</span>
+      <!-- ======================================================================
+           4. REAL APP SCREENS SECTION
+           ====================================================================== -->
+      <section id="screens" class="section-block" aria-label="App Screens">
+        <div class="section-header">
+          <div class="pill-tag">
+            <span class="dot"></span>
+            <span>Interface</span>
+          </div>
+          <h2 class="section-heading">INSIDE THE APP</h2>
         </div>
-        <h2 class="section-heading">
-          <span class="outlined-prefix">BUILT</span><span> FOR TWO JOBS</span>
-        </h2>
-      </div>
 
-      <div class="usecase-grid">
-        <!-- Use Case 1: Broadcast -->
-        <article class="neu-card-lg usecase-card">
-          <div>
-            <div class="usecase-card__top">
-              <div class="icon-well" aria-hidden="true">
-                <svg class="icon-svg" viewBox="0 0 24 24">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <span class="pill-tag">Zero Ban Risk</span>
+        <div class="screens-grid">
+          <!-- Screen 1 -->
+          <article class="neu-card-md screen-card">
+            <div class="screen-bezel">
+              <img
+                src="assets/screen-broadcast.png"
+                alt="Ghost Broadcast Composer Screen with Contacts and {name} Variables"
+                width="800"
+                height="1600"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
-            <h3 class="usecase-card__title" style="margin-top: 18px;">
-              Unlimited Custom {name} Broadcasts
-            </h3>
-            <p class="usecase-card__desc">
-              Send personalized messages to hundreds of clients one by one on your real WhatsApp without getting suspended.
-            </p>
-          </div>
-
-          <div class="neu-well-inset message-well">
-            <div class="message-well__meta">
-              <span id="broadcastRecipient">To: Aarav Mehta (1/48)</span>
-              <span class="message-well__status">Sent ✓✓</span>
+            <div>
+              <h3 class="title-text">01 · Compose</h3>
+              <p class="subtitle-text">Pick contacts &amp; {name}</p>
             </div>
-            <p id="broadcastPreviewText" class="message-well__bubble">
-              "Hey Aarav, our new collection is now live. Reply YES for early access."
-            </p>
-          </div>
-        </article>
+          </article>
 
-        <!-- Use Case 2: Never Forgets -->
-        <article class="neu-card-lg usecase-card">
-          <div>
-            <div class="usecase-card__top">
-              <div class="icon-well" aria-hidden="true">
-                <svg class="icon-svg" viewBox="0 0 24 24">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-              </div>
-              <span class="pill-tag">Never Forgets</span>
+          <!-- Screen 2 -->
+          <article class="neu-card-md screen-card">
+            <div class="screen-bezel">
+              <img
+                src="assets/screen-live-send.png"
+                alt="Ghost Live Dispatch Overlay Screen Sending Messages One by One"
+                width="800"
+                height="1600"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
-            <h3 class="usecase-card__title" style="margin-top: 18px;">
-              Birthdays, Anniversaries &amp; 7 AM Notes
-            </h3>
-            <p class="usecase-card__desc">
-              Set once for daily, weekly, or yearly cues. Ghost delivers while you sleep so you never miss a moment.
-            </p>
-          </div>
-
-          <div class="neu-well-inset message-well">
-            <div class="message-well__meta">
-              <span id="lovedRecipient">To: Mom · 07:00 AM Daily</span>
-              <span class="message-well__status">Scheduled ✓</span>
+            <div>
+              <h3 class="title-text">02 · Live Send</h3>
+              <p class="subtitle-text">1 by 1 auto-tap send</p>
             </div>
-            <p id="lovedPreviewText" class="message-well__bubble">
-              "Good morning Mom! Hope you have a peaceful and happy day today."
-            </p>
-          </div>
-        </article>
-      </div>
-    </section>
+          </article>
 
-    <!-- ========================================================================
-         4. REAL APP SCREENS SECTION
-         ======================================================================== -->
-    <section id="screens" class="section-block" aria-label="App Screens">
-      <div class="section-header">
-        <div class="pill-tag">
-          <span class="dot"></span>
-          <span>Interface</span>
+          <!-- Screen 3 -->
+          <article class="neu-card-md screen-card">
+            <div class="screen-bezel">
+              <img
+                src="assets/screen-loved-ones.png"
+                alt="Ghost Queue and Scheduled Tasks Screen for Daily and Yearly Cues"
+                width="800"
+                height="1600"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div>
+              <h3 class="title-text">03 · Queue</h3>
+              <p class="subtitle-text">Daily &amp; yearly cues</p>
+            </div>
+          </article>
+
+          <!-- Screen 4 -->
+          <article class="neu-card-md screen-card">
+            <div class="screen-bezel">
+              <img
+                src="assets/screen-setup.png"
+                alt="Ghost Setup and Android Permissions Screen for Auto-Tap and Exact Wake"
+                width="800"
+                height="1600"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div>
+              <h3 class="title-text">04 · Setup</h3>
+              <p class="subtitle-text">Wake &amp; Auto-Tap</p>
+            </div>
+          </article>
         </div>
-        <h2 class="section-heading">
-          <span class="outlined-prefix">INS</span><span>IDE THE APP</span>
-        </h2>
-      </div>
-
-      <div class="screens-grid">
-        <!-- Screen 1 -->
-        <article class="neu-card-md screen-card">
-          <div class="screen-bezel">
-            <img src="assets/screen-broadcast.png" alt="Ghost Broadcast Composer Screen" loading="lazy" />
-          </div>
-          <div>
-            <h3 class="title-text">01 · Compose</h3>
-            <p class="subtitle-text">Pick contacts &amp; {name}</p>
-          </div>
-        </article>
-
-        <!-- Screen 2 -->
-        <article class="neu-card-md screen-card">
-          <div class="screen-bezel">
-            <img src="assets/screen-live-send.png" alt="Ghost Live Dispatch Overlay Screen" loading="lazy" />
-          </div>
-          <div>
-            <h3 class="title-text">02 · Live Send</h3>
-            <p class="subtitle-text">1 by 1 auto-tap send</p>
-          </div>
-        </article>
-
-        <!-- Screen 3 -->
-        <article class="neu-card-md screen-card">
-          <div class="screen-bezel">
-            <img src="assets/screen-loved-ones.png" alt="Ghost Queue and Scheduled Tasks Screen" loading="lazy" />
-          </div>
-          <div>
-            <h3 class="title-text">03 · Queue</h3>
-            <p class="subtitle-text">Daily &amp; yearly cues</p>
-          </div>
-        </article>
-
-        <!-- Screen 4 -->
-        <article class="neu-card-md screen-card">
-          <div class="screen-bezel">
-            <img src="assets/screen-setup.png" alt="Ghost Setup and Permissions Screen" loading="lazy" />
-          </div>
-          <div>
-            <h3 class="title-text">04 · Setup</h3>
-            <p class="subtitle-text">Wake &amp; Auto-Tap</p>
-          </div>
-        </article>
-      </div>
-    </section>
+      </section>
+    </main>
 
     <!-- ========================================================================
          5. CLOSING FOOTER
          ======================================================================== -->
     <footer class="neu-card-lg site-footer">
-      <h2 class="footer-heading">
-        <span class="outlined-prefix">PUT</span><span> YOUR WHATSAPP ON AUTOPILOT TODAY.</span>
-      </h2>
+      <h2 class="footer-heading">PUT YOUR WHATSAPP ON AUTOPILOT TODAY.</h2>
       <div class="footer-pills">
         <span class="pill-tag">100% On-Device</span>
         <span class="pill-tag">Zero Cloud</span>
@@ -1368,23 +1354,10 @@
   </div>
 
   <!-- ========================================================================
-       VANILLA JAVASCRIPT: GAUGE, 4-STEP SEQUENCER & LIVE MESSAGE PREVIEWS
+       VANILLA JAVASCRIPT: 4-STEP SEQUENCER & LIVE MESSAGE PREVIEWS
        ======================================================================== -->
   <script>
     (function () {
-      const TOTAL_TICKS = 60;
-      const MAX_COUNT = 48;
-      const CENTER_X = 140;
-      const CENTER_Y = 126;
-      const OUTER_RADIUS = 108;
-
-      const STEP_STATES = [
-        { badge: '01 · Waking Screen on Cue', ratio: 0.25 },
-        { badge: '02 · Opening WhatsApp Chat', ratio: 0.50 },
-        { badge: '03 · Sending 1 by 1 with {name}', ratio: 0.80 },
-        { badge: '04 · Closing WhatsApp & Sleeping', ratio: 1.00 }
-      ];
-
       const BROADCAST_SAMPLES = [
         {
           to: 'To: Aarav Mehta (1/48)',
@@ -1415,11 +1388,6 @@
         }
       ];
 
-      const ticksGroup = document.getElementById('gaugeTicks');
-      const needleGroup = document.getElementById('gaugeNeedleGroup');
-      const gaugeValueText = document.getElementById('gaugeValueText');
-      const liveStepBadge = document.getElementById('liveStepBadge');
-      const heroToggle = document.getElementById('heroToggle');
       const plusActionBtn = document.getElementById('plusActionBtn');
       const nextStepBtn = document.getElementById('nextStepBtn');
       const cycleStepBtn = document.getElementById('cycleStepBtn');
@@ -1430,73 +1398,11 @@
       const lovedRecipient = document.getElementById('lovedRecipient');
       const lovedPreviewText = document.getElementById('lovedPreviewText');
 
-      let currentGaugeRatio = 0;
       let activeStepIndex = 0;
       let sampleIndex = 0;
 
-      // Build 180-degree radial tick marks
-      function renderTicks(activeRatio) {
-        if (!ticksGroup) return;
-        ticksGroup.innerHTML = '';
-        const activeLimit = Math.round(TOTAL_TICKS * activeRatio);
-
-        for (let i = 0; i <= TOTAL_TICKS; i++) {
-          const isMajor = i % 5 === 0;
-          const tickLength = isMajor ? 13 : 7;
-          const innerRadius = OUTER_RADIUS - tickLength;
-
-          const deg = 180 - (i / TOTAL_TICKS) * 180;
-          const rad = (deg * Math.PI) / 180;
-
-          const x1 = CENTER_X + innerRadius * Math.cos(rad);
-          const y1 = CENTER_Y - innerRadius * Math.sin(rad);
-          const x2 = CENTER_X + OUTER_RADIUS * Math.cos(rad);
-          const y2 = CENTER_Y - OUTER_RADIUS * Math.sin(rad);
-
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', x1.toFixed(2));
-          line.setAttribute('y1', y1.toFixed(2));
-          line.setAttribute('x2', x2.toFixed(2));
-          line.setAttribute('y2', y2.toFixed(2));
-          line.setAttribute('stroke', i <= activeLimit ? '#3D4852' : '#9AA5B8');
-          line.setAttribute('stroke-width', isMajor ? '2' : '1.35');
-          line.setAttribute('stroke-linecap', 'round');
-          ticksGroup.appendChild(line);
-        }
-      }
-
-      // Animate needle rotation and counter readout
-      function animateNeedle(fromRatio, toRatio, durationMs) {
-        const startTime = performance.now();
-
-        function frame(now) {
-          const elapsed = now - startTime;
-          const progress = Math.min(1, elapsed / durationMs);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const ratio = fromRatio + (toRatio - fromRatio) * eased;
-          const angle = -90 + ratio * 180;
-
-          if (needleGroup) {
-            needleGroup.setAttribute('transform', `rotate(${angle.toFixed(2)} ${CENTER_X} ${CENTER_Y})`);
-          }
-          if (gaugeValueText) {
-            const count = Math.round(ratio * MAX_COUNT);
-            gaugeValueText.textContent = String(count).padStart(2, '0');
-          }
-          renderTicks(ratio);
-
-          if (progress < 1) {
-            requestAnimationFrame(frame);
-          } else {
-            currentGaugeRatio = toRatio;
-          }
-        }
-
-        requestAnimationFrame(frame);
-      }
-
       function setActiveStep(index) {
-        activeStepIndex = index % STEP_STATES.length;
+        activeStepIndex = index % stepRows.length;
         stepRows.forEach((row, idx) => {
           row.classList.toggle('is-active', idx === activeStepIndex);
         });
@@ -1504,7 +1410,7 @@
 
       // Auto-cycle through the 4 steps and message samples every 2.8s
       setInterval(() => {
-        setActiveStep((activeStepIndex + 1) % STEP_STATES.length);
+        setActiveStep((activeStepIndex + 1) % stepRows.length);
 
         sampleIndex = (sampleIndex + 1) % BROADCAST_SAMPLES.length;
         if (broadcastRecipient && broadcastPreviewText) {
@@ -1517,22 +1423,6 @@
         }
       }, 2800);
 
-      // Toggle switch interaction
-      if (heroToggle) {
-        heroToggle.addEventListener('click', () => {
-          const isChecked = heroToggle.getAttribute('aria-checked') === 'true';
-          const nextChecked = !isChecked;
-          heroToggle.setAttribute('aria-checked', String(nextChecked));
-
-          if (nextChecked) {
-            setActiveStep(activeStepIndex);
-          } else {
-            if (liveStepBadge) liveStepBadge.textContent = 'Autopilot Paused';
-            animateNeedle(currentGaugeRatio, 0, 450);
-          }
-        });
-      }
-
       stepRows.forEach((row, idx) => {
         row.addEventListener('click', () => {
           setActiveStep(idx);
@@ -1541,13 +1431,13 @@
 
       if (nextStepBtn) {
         nextStepBtn.addEventListener('click', () => {
-          setActiveStep((activeStepIndex + 1) % STEP_STATES.length);
+          setActiveStep((activeStepIndex + 1) % stepRows.length);
         });
       }
 
       if (cycleStepBtn) {
         cycleStepBtn.addEventListener('click', () => {
-          setActiveStep((activeStepIndex + 1) % STEP_STATES.length);
+          setActiveStep((activeStepIndex + 1) % stepRows.length);
         });
       }
 

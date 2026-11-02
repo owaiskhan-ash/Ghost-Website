@@ -1,20 +1,19 @@
 # Ghost · Autopilot for WhatsApp
 
-> Ghost (v1.8.6) is a 100% on-device Android WhatsApp scheduler and sequential broadcast autopilot. Schedule once: Ghost wakes your phone at the exact minute, opens WhatsApp or WhatsApp Business, types custom `{name}` messages one by one, taps Send at a natural human pace, and locks the screen.
+> Ghost (v1.8.6) is a 100% on-device Android WhatsApp scheduler and sequential broadcast autopilot. Schedule once: Ghost wakes your phone at the exact minute, opens WhatsApp or WhatsApp Business, types custom {name} messages one by one, taps Send at a natural human pace, and locks the screen.
 
-- **Official Website:** https://ghost.justsimpleapps.online/
-- **Source Repository:** https://github.com/owaiskhan-ash/Ghost
-- **Platform:** Android 8.0+ (works with official WhatsApp & WhatsApp Business)
-- **Privacy & Architecture:** 100% on-device execution, zero cloud servers, instant Volume-Down emergency stop.
+Ghost operates 100% locally on Android 8.0+ without cloud servers or bulk APIs. It dispatches messages sequentially through a 4-step autonomous device control loop (01 Wakes on Cue, 02 Opens WhatsApp, 03 Sends One by One, 04 Closes WhatsApp) with an instant Volume-Down hardware emergency stop.
 
-## How Ghost Works (4-Step Autonomous Device Control)
+## Documentation & Core Sections
 
-1. **01 · Wakes on Cue:** Lights up the Android display at the exact scheduled minute and dismisses non-password swipe lock.
-2. **02 · Opens WhatsApp:** Launches WhatsApp (`com.whatsapp`) or WA Business (`com.whatsapp.w4b`), locates the recipient chat, and injects dynamic `{name}`, `{date}`, and `{day}` variables.
-3. **03 · Sends One by One:** Taps Send sequentially at a natural human cadence, eliminating bulk-API ban risks.
-4. **04 · Closes WhatsApp:** Exits back to the home screen and locks the device automatically.
+- [Ghost Landing Page & Interactive Dashboard](https://ghost.justsimpleapps.online/): Overview of the autonomous Android courier for WhatsApp and WhatsApp Business.
+- [How Ghost Works (4-Step Autonomous Control)](https://ghost.justsimpleapps.online/#how-it-works): Step-by-step breakdown of screen wake, chat search, sequential auto-tap send, and screen lock.
+- [Core Use Cases (Client Lists & Loved Ones)](https://ghost.justsimpleapps.online/#use-cases): Zero-ban-risk {name} client broadcasts and recurring daily, weekly, and yearly schedules.
+- [Inside the App (v1.8.6 Interface Screens)](https://ghost.justsimpleapps.online/#screens): Compose, Live Send, Queue, and Setup screens from the Android app.
 
-## Core Use Cases
+## Source Code & Technical Resources
 
-- **Client Lists (Zero Ban Risk):** Send unlimited personalized `{name}` broadcasts to client groups sequentially on your real WhatsApp number without getting suspended.
-- **Loved Ones (Never Forgets):** Set once for daily 7 AM good-morning notes, weekly check-ins, birthdays, or yearly anniversaries. Ghost delivers while you sleep.
+- [Ghost Android App Repository](https://github.com/owaiskhan-ash/Ghost): Official open-source Android source code and APK releases for Ghost v1.8.6.
+- [Ghost Latest APK Releases](https://github.com/owaiskhan-ash/Ghost/releases): Direct Android package downloads and release notes.
+- [Ghost Website Repository](https://github.com/owaiskhan-ash/Ghost-Website): Source repository for the Ghost Neumorphic Soft-UI web dashboard.
+- [XML Sitemap](https://ghost.justsimpleapps.online/sitemap.xml): Search engine and image sitemap for ghost.justsimpleapps.online.

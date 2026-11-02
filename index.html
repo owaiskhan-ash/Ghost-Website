@@ -137,6 +137,13 @@
             "@type": "Offer",
             "price": "0",
             "priceCurrency": "USD"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "28"
           }
         },
         {
@@ -144,30 +151,74 @@
           "@id": "https://ghost.justsimpleapps.online/#howto",
           "name": "How Ghost Automates WhatsApp Messages on Android",
           "description": "4-step autonomous on-device control that dispatches scheduled WhatsApp messages hands-free.",
+          "totalTime": "PT1M",
+          "image": "https://ghost.justsimpleapps.online/assets/screen-live-send.png",
           "step": [
             {
               "@type": "HowToStep",
               "position": 1,
               "name": "Wakes on Cue",
+              "url": "https://ghost.justsimpleapps.online/#how-it-works",
               "text": "Ghost lights up your Android screen at the exact scheduled minute."
             },
             {
               "@type": "HowToStep",
               "position": 2,
               "name": "Opens WhatsApp",
+              "url": "https://ghost.justsimpleapps.online/#how-it-works",
               "text": "Launches WhatsApp or WA Business, finds the contact chat, and types custom {name} variables."
             },
             {
               "@type": "HowToStep",
               "position": 3,
               "name": "Sends One by One",
+              "url": "https://ghost.justsimpleapps.online/#how-it-works",
               "text": "Taps Send sequentially at a natural human pace with zero ban risk."
             },
             {
               "@type": "HowToStep",
               "position": 4,
               "name": "Closes WhatsApp",
+              "url": "https://ghost.justsimpleapps.online/#how-it-works",
               "text": "Exits WhatsApp back to the home screen and lets the display lock."
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://ghost.justsimpleapps.online/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Does Ghost have any WhatsApp ban risk?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Ghost runs 100% on your physical Android device and dispatches messages sequentially one by one inside your real WhatsApp or WhatsApp Business app at a natural human pace, avoiding bulk cloud APIs and unofficial mod APKs."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Ghost work while my phone screen is off?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. At the scheduled minute, Ghost wakes the display, opens WhatsApp, types and taps Send for each recipient, exits WhatsApp, and lets the screen lock again automatically."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can Ghost send personalized {name} broadcasts to client lists?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can select individual contacts or custom broadcast groups and use {name}, {date}, and {day} variables so every recipient receives a personally addressed message."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Ghost upload my contacts or messages to the cloud?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Never. Ghost operates 100% locally on your Android phone with zero cloud servers and instant Volume-Down hardware emergency stop."
+              }
             }
           ]
         }

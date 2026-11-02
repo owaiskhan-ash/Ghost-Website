@@ -1,0 +1,20 @@
+# Ghost · Autopilot for WhatsApp
+
+> Ghost (v1.8.6) is a 100% on-device Android WhatsApp scheduler and sequential broadcast autopilot. Schedule once: Ghost wakes your phone at the exact minute, opens WhatsApp or WhatsApp Business, types custom `{name}` messages one by one, taps Send at a natural human pace, and locks the screen.
+
+- **Official Website:** https://ghost.justsimpleapps.online/
+- **Source Repository:** https://github.com/owaiskhan-ash/Ghost
+- **Platform:** Android 8.0+ (works with official WhatsApp & WhatsApp Business)
+- **Privacy & Architecture:** 100% on-device execution, zero cloud servers, instant Volume-Down emergency stop.
+
+## How Ghost Works (4-Step Autonomous Device Control)
+
+1. **01 · Wakes on Cue:** Lights up the Android display at the exact scheduled minute and dismisses non-password swipe lock.
+2. **02 · Opens WhatsApp:** Launches WhatsApp (`com.whatsapp`) or WA Business (`com.whatsapp.w4b`), locates the recipient chat, and injects dynamic `{name}`, `{date}`, and `{day}` variables.
+3. **03 · Sends One by One:** Taps Send sequentially at a natural human cadence, eliminating bulk-API ban risks.
+4. **04 · Closes WhatsApp:** Exits back to the home screen and locks the device automatically.
+
+## Core Use Cases
+
+- **Client Lists (Zero Ban Risk):** Send unlimited personalized `{name}` broadcasts to client groups sequentially on your real WhatsApp number without getting suspended.
+- **Loved Ones (Never Forgets):** Set once for daily 7 AM good-morning notes, weekly check-ins, birthdays, or yearly anniversaries. Ghost delivers while you sleep.

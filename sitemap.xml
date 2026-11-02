@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
   <url>
     <loc>https://ghost.justsimpleapps.online/</loc>
     <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ghost.justsimpleapps.online/assets/og-image.png</image:loc>
+      <image:title>Ghost · Autopilot for WhatsApp</image:title>
+      <image:caption>100% on-device Android WhatsApp scheduler and sequential broadcast autopilot.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ghost.justsimpleapps.online/assets/card-loved-ones.png</image:loc>
+      <image:title>Ghost Loved Ones Schedule Card</image:title>
+      <image:caption>Schedule birthdays, anniversaries, and 7 AM morning WhatsApp notes automatically.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ghost.justsimpleapps.online/assets/card-client-lists.png</image:loc>
+      <image:title>Ghost Client Lists Broadcast Card</image:title>
+      <image:caption>Send unlimited custom {name} WhatsApp broadcasts sequentially with zero ban risk.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ghost.justsimpleapps.online/assets/screen-broadcast.png</image:loc>
+      <image:title>Ghost 01 Compose Screen</image:title>
+      <image:caption>Pick contacts or broadcast groups and compose custom {name} WhatsApp messages.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ghost.justsimpleapps.online/assets/screen-live-send.png</image:loc>
+      <image:title>Ghost 02 Live Send Screen</image:title>
+      <image:caption>Live on-device sequential WhatsApp dispatch sending messages one by one.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ghost.justsimpleapps.online/assets/screen-loved-ones.png</image:loc>
+      <image:title>Ghost 03 Queue Screen</image:title>
+      <image:caption>Manage daily, weekly, and yearly scheduled WhatsApp cues and delivery counts.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ghost.justsimpleapps.online/assets/screen-setup.png</image:loc>
+      <image:title>Ghost 04 Setup &amp; Permissions Screen</image:title>
+      <image:caption>Configure WhatsApp or WA Business routing, exact screen wake, and auto-tap permissions.</image:caption>
+    </image:image>
   </url>
 </urlset>

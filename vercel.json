@@ -1,6 +1,34 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "ghost-website-plum.vercel.app"
+        }
+      ],
+      "destination": "https://ghost.justsimpleapps.online/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
     {
       "source": "/assets/fonts/(.*)",
       "headers": [

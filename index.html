@@ -30,6 +30,20 @@
     type="font/woff2"
     crossorigin
   />
+  <link
+    rel="preload"
+    href="assets/card-loved-ones.webp"
+    as="image"
+    type="image/webp"
+    fetchpriority="high"
+  />
+  <link
+    rel="preload"
+    href="assets/card-client-lists.webp"
+    as="image"
+    type="image/webp"
+    fetchpriority="high"
+  />
 
   <!-- Transparent White Pigeon PNG Favicon & App Icons (No Background) -->
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png?v=3" />
@@ -61,16 +75,32 @@
   />
   <meta name="twitter:image" content="https://ghost.justsimpleapps.online/assets/og-image.png?v=3" />
 
-  <!-- Schema.org Structured Data (WebSite + SoftwareApplication + HowTo) -->
+  <!-- Schema.org Structured Data (Organization + WebSite + SoftwareApplication + HowTo) -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
+          "@type": "Organization",
+          "@id": "https://ghost.justsimpleapps.online/#organization",
+          "name": "JustSimpleApps",
+          "url": "https://justsimpleapps.online/",
+          "logo": "https://ghost.justsimpleapps.online/assets/icon-512.png",
+          "sameAs": [
+            "https://github.com/owaiskhan-ash",
+            "https://github.com/owaiskhan-ash/Ghost",
+            "https://github.com/owaiskhan-ash/Ghost-Website"
+          ]
+        },
+        {
           "@type": "WebSite",
           "@id": "https://ghost.justsimpleapps.online/#website",
           "url": "https://ghost.justsimpleapps.online/",
           "name": "Ghost · WhatsApp Autopilot",
+          "inLanguage": "en-US",
+          "publisher": {
+            "@id": "https://ghost.justsimpleapps.online/#organization"
+          },
           "description": "100% on-device Android WhatsApp scheduler and sequential broadcast autopilot."
         },
         {
@@ -80,7 +110,22 @@
           "operatingSystem": "Android 8.0+",
           "applicationCategory": "CommunicationApplication",
           "softwareVersion": "1.8.6",
+          "isAccessibleForFree": true,
+          "author": {
+            "@id": "https://ghost.justsimpleapps.online/#organization"
+          },
+          "sameAs": [
+            "https://github.com/owaiskhan-ash/Ghost",
+            "https://github.com/owaiskhan-ash/Ghost-Website"
+          ],
           "description": "Autonomous Android courier that wakes your phone on schedule, opens WhatsApp or WA Business, types personalized {name} messages one by one, taps Send, and locks the screen.",
+          "featureList": [
+            "100% On-Device Android WhatsApp Scheduler with Zero Cloud Dependency",
+            "Supports both WhatsApp and WhatsApp Business",
+            "Unlimited Custom {name} Sequential Broadcasts with Zero Ban Risk",
+            "Automatic Screen Wake, Chat Search, One-by-One Auto-Tap Send, and Screen Lock",
+            "Daily, Weekly, and Yearly Recurring Cues for Birthdays, Anniversaries, and Morning Notes"
+          ],
           "image": "https://ghost.justsimpleapps.online/assets/og-image.png",
           "screenshot": [
             "https://ghost.justsimpleapps.online/assets/screen-broadcast.png",
@@ -493,6 +538,14 @@
       overflow: hidden;
     }
 
+    .square-card__art picture {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .square-card__art img {
       width: 100%;
       height: 100%;
@@ -802,6 +855,14 @@
       overflow: hidden;
     }
 
+    .screen-bezel picture {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .screen-bezel img {
       width: 100%;
       height: 100%;
@@ -891,14 +952,17 @@
     <header class="neu-pill site-header">
       <div class="brand-lockup">
         <div class="brand-icon-ring" aria-hidden="true" style="overflow: hidden; padding: 6px;">
-          <img
-            src="assets/pigeon-white-nobg.png"
-            alt="Ghost White Pigeon Logo"
-            width="64"
-            height="64"
-            decoding="async"
-            style="width: 100%; height: 100%; object-fit: contain; display: block;"
-          />
+          <picture style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+            <source srcset="assets/pigeon-white-nobg.webp" type="image/webp" />
+            <img
+              src="assets/pigeon-white-nobg.png"
+              alt="Ghost White Pigeon Logo"
+              width="64"
+              height="64"
+              decoding="async"
+              style="width: 100%; height: 100%; object-fit: contain; display: block;"
+            />
+          </picture>
         </div>
         <span class="brand-wordmark">GHOST</span>
       </div>
@@ -960,14 +1024,17 @@
                   </button>
                 </div>
                 <div class="square-card__art">
-                  <img
-                    src="assets/card-loved-ones.png"
-                    alt="Soft UI 3D heart clock scheduled at 7 AM for loved ones"
-                    width="600"
-                    height="600"
-                    fetchpriority="high"
-                    decoding="async"
-                  />
+                  <picture>
+                    <source srcset="assets/card-loved-ones.webp" type="image/webp" />
+                    <img
+                      src="assets/card-loved-ones.png"
+                      alt="Soft UI 3D heart clock scheduled at 7 AM for loved ones"
+                      width="600"
+                      height="600"
+                      fetchpriority="high"
+                      decoding="async"
+                    />
+                  </picture>
                 </div>
                 <div class="square-card__bottom">
                   <h2 class="title-text">Loved Ones</h2>
@@ -992,14 +1059,17 @@
                   </button>
                 </div>
                 <div class="square-card__art">
-                  <img
-                    src="assets/card-client-lists.png"
-                    alt="Soft UI 3D sequential client broadcast envelopes"
-                    width="600"
-                    height="600"
-                    fetchpriority="high"
-                    decoding="async"
-                  />
+                  <picture>
+                    <source srcset="assets/card-client-lists.webp" type="image/webp" />
+                    <img
+                      src="assets/card-client-lists.png"
+                      alt="Soft UI 3D sequential client broadcast envelopes"
+                      width="600"
+                      height="600"
+                      fetchpriority="high"
+                      decoding="async"
+                    />
+                  </picture>
                 </div>
                 <div class="square-card__bottom">
                   <h2 class="title-text">Client Lists</h2>
@@ -1034,14 +1104,17 @@
               <div class="profile-pill__left">
                 <div class="avatar-ring" aria-hidden="true">
                   <div class="avatar-slot" style="overflow: hidden; padding: 6px;">
-                    <img
-                      src="assets/pigeon-white-nobg.png"
-                      alt="Ghost White Pigeon Logo"
-                      width="64"
-                      height="64"
-                      decoding="async"
-                      style="width: 100%; height: 100%; object-fit: contain; display: block;"
-                    />
+                    <picture style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                      <source srcset="assets/pigeon-white-nobg.webp" type="image/webp" />
+                      <img
+                        src="assets/pigeon-white-nobg.png"
+                        alt="Ghost White Pigeon Logo"
+                        width="64"
+                        height="64"
+                        decoding="async"
+                        style="width: 100%; height: 100%; object-fit: contain; display: block;"
+                      />
+                    </picture>
                   </div>
                 </div>
                 <div>
@@ -1267,14 +1340,17 @@
           <!-- Screen 1 -->
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
-              <img
-                src="assets/screen-broadcast.png"
-                alt="Ghost Broadcast Composer Screen with Contacts and {name} Variables"
-                width="800"
-                height="1600"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source srcset="assets/screen-broadcast.webp" type="image/webp" />
+                <img
+                  src="assets/screen-broadcast.png"
+                  alt="Ghost Broadcast Composer Screen with Contacts and {name} Variables"
+                  width="800"
+                  height="1600"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <div>
               <h3 class="title-text">01 · Compose</h3>
@@ -1285,14 +1361,17 @@
           <!-- Screen 2 -->
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
-              <img
-                src="assets/screen-live-send.png"
-                alt="Ghost Live Dispatch Overlay Screen Sending Messages One by One"
-                width="800"
-                height="1600"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source srcset="assets/screen-live-send.webp" type="image/webp" />
+                <img
+                  src="assets/screen-live-send.png"
+                  alt="Ghost Live Dispatch Overlay Screen Sending Messages One by One"
+                  width="800"
+                  height="1600"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <div>
               <h3 class="title-text">02 · Live Send</h3>
@@ -1303,14 +1382,17 @@
           <!-- Screen 3 -->
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
-              <img
-                src="assets/screen-loved-ones.png"
-                alt="Ghost Queue and Scheduled Tasks Screen for Daily and Yearly Cues"
-                width="800"
-                height="1600"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source srcset="assets/screen-loved-ones.webp" type="image/webp" />
+                <img
+                  src="assets/screen-loved-ones.png"
+                  alt="Ghost Queue and Scheduled Tasks Screen for Daily and Yearly Cues"
+                  width="800"
+                  height="1600"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <div>
               <h3 class="title-text">03 · Queue</h3>
@@ -1321,14 +1403,17 @@
           <!-- Screen 4 -->
           <article class="neu-card-md screen-card">
             <div class="screen-bezel">
-              <img
-                src="assets/screen-setup.png"
-                alt="Ghost Setup and Android Permissions Screen for Auto-Tap and Exact Wake"
-                width="800"
-                height="1600"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source srcset="assets/screen-setup.webp" type="image/webp" />
+                <img
+                  src="assets/screen-setup.png"
+                  alt="Ghost Setup and Android Permissions Screen for Auto-Tap and Exact Wake"
+                  width="800"
+                  height="1600"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <div>
               <h3 class="title-text">04 · Setup</h3>
